@@ -1,0 +1,98 @@
+@theme {
+  /* 폰트 설정 */
+  --font-body: 'Pretendard', sans-serif;
+
+  /* 색상 설정 */
+  /* gray */
+  --color-gr-100: #FAFAFC;
+  --color-gr-200: #F4F4F9;
+  --color-gr-300: #EFEFF3;
+  --color-gr-400: #DEDEE4;
+  --color-gr-500: #BABDC3;
+  --color-gr-600: #989AA2;
+  --color-gr-700: #6F727C;
+  --color-gr-800: #404249;
+  --color-gr-900: #1B1C1F;
+
+  /* black */
+  --color-black: #000000;
+
+  /* white */
+  --color-white: #FFFFFF;
+
+  /* purple */
+  --color-purple-100: #E7E5FF;
+  --color-purple-500: #5B4AF4;
+  --color-purple-600: #5349B2;
+
+  /* kakao-yellow */
+  --color-kakao-yellow: #FFEB02;
+
+  /* red */
+  --color-red-500: #FF3C3C ;
+
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../fonts/PretendardVariable.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 타이포그래피 클래스 */
+.font-h1 {
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.font-h2 {
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.font-h3 {
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.font-h4 {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+
+.font-h5 {
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+
+.font-h6 {
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+
+.font-pr {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
+
+.font-caption {
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
