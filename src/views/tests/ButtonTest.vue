@@ -1,54 +1,93 @@
 <template>
   <div class="flex flex-col gap-y-4 w-full">
-    <BigButton variant="kakao">
+    <Button variant="kakao">
       <template #icon>
-        <img src="@/assets/icons/KakaoIcon.svg" alt="카카오 로고" width="20" height="19" />
+        <Icon fill="black">
+          <KakaoIcon />
+        </Icon>
       </template>
       <template #text>
-        <p class="font-h5">카카오로 시작하기</p>
+        카카오로 시작하기
       </template>
-    </BigButton>
-    <BigButton variant="purple">
+    </Button>
+    <Button variant="point">
       <template #icon>
-        <img src="@/assets/icons/LineEmailIcon.svg" alt="이메일 로고" width="24" height="24" />
+        <Icon stroke="white">
+          <LineEmailIcon />
+        </Icon>
       </template>
       <template #text>
-        <p class="font-h5 text-gr-100">이메일로 가입하기</p>
+        이메일로 가입하기
       </template>
-    </BigButton>
-    <BigButton variant="purple">
+    </Button>
+    <Button variant="point">
       <template #text>
-        <p class="font-h5 text-gr-100">로그인</p>
+        로그인
       </template>
-    </BigButton>
-    <BigButton variant="purple">
-      <template #text>
-        <p class="font-h5 text-gr-100">로그인</p>
-      </template>
-    </BigButton>
+    </Button>
     <div class="flex gap-5">
-      <BigButton variant="purple">
+      <Button variant="point">
         <template #text>
-          <p class="font-h5 text-gr-100">채용공고 보러가기</p>
+          채용공고 보러가기
         </template>
-      </BigButton>
-      <BigButton variant="purple">
+      </Button>
+      <Button variant="point">
         <template #text>
-          <p class="font-h5 text-gr-100">나의 스펙등록하기</p>
+          나의 스펙등록하기
         </template>
-      </BigButton>
+      </Button>
     </div>
-    <BigButton variant="gray">
-      <template #text>
-        <p class="font-h5 text-gr-800">홈으로</p>
+    <Button variant="gray">
+      <template #text>홈으로
       </template>
-    </BigButton>
+    </Button>
+    <Button size="sm" variant="point">
+      <template #text>채용공고 보러가기
+      </template>
+    </Button>
+    <Button size="sm" variant="point">
+      <template #text>
+        회원가입
+      </template>
+    </Button>
+    <ToggleButton>
+      <template #icon>
+        <Icon fill="point">
+          <StarIcon />
+        </Icon>
+      </template>
+      <template #text>즐겨찾기 삭제</template>
+    </ToggleButton>
+    <ToggleButton>
+      <template #icon>
+        <Icon fill="point">
+          <PlusIcon />
+        </Icon>
+      </template>
+      <template #text>챌린지 삭제</template>
+    </ToggleButton>
+    <ToggleButton>
+      <template #icon>
+        <Icon fill="point">
+          <LinePlusIcon />
+        </Icon>
+      </template>
+      <template #text>챌린지 추가</template>
+    </ToggleButton>
+    <CircleButton></CircleButton>
   </div>
 </template>
 
 <script setup lang='ts'>
-import BigButton from '../../common/components/BigButton.vue'
-
+import Button from '../../common/components/button/Button.vue'
+import KakaoIcon from '@/assets/icons/KakaoIcon_20.svg'
+import LineEmailIcon from '@/assets/icons/LineEmailIcon_24.svg'
+import Icon from '@/common/components/Icon.vue'
+import ToggleButton from '@/common/components/button/ToggleButton.vue'
+import StarIcon from '@/assets/icons/FillStarIcon_24.svg'
+import PlusIcon from '@/assets/icons/FillPlusIcon_24.svg'
+import LinePlusIcon from '@/assets/icons/LinePlusIcon_24.svg'
+import CircleButton from '@/common/components/button/CircleButton.vue'
 const handleClick = () => {
   console.log('clicked');
 };

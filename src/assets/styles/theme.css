@@ -4,15 +4,25 @@
 
   /* 색상 설정 */
   /* gray */
-  --color-gr-100: #FAFAFC;
-  --color-gr-200: #F4F4F9;
-  --color-gr-300: #EFEFF3;
-  --color-gr-400: #DEDEE4;
-  --color-gr-500: #BABDC3;
-  --color-gr-600: #989AA2;
-  --color-gr-700: #6F727C;
-  --color-gr-800: #404249;
-  --color-gr-900: #1B1C1F;
+  --color-gary-100: #FAFAFC;
+  --color-gary-200: #F4F4F9;
+  --color-gary-300: #EFEFF3;
+  --color-gary-400: #DEDEE4;
+  --color-gary-500: #BABDC3;
+  --color-gary-600: #989AA2;
+  --color-gary-700: #6F727C;
+  --color-gary-800: #404249;
+  --color-gary-900: #1B1C1F;
+
+  --color-gry-100: #FAFAFC;
+  --color-gry-200: #F4F4F9;
+  --color-gry-300: #EFEFF3;
+  --color-gry-400: #DEDEE4;
+  --color-gry-500: #BABDC3;
+  --color-gry-600: #989AA2;
+  --color-gry-700: #6F727C;
+  --color-gry-800: #404249;
+  --color-gry-900: #1B1C1F;
 
   /* black */
   --color-black: #000000;
@@ -21,27 +31,38 @@
   --color-white: #FFFFFF;
 
   /* purple */
-  --color-purple-100: #F6F5FF;
-  --color-purple-200: #D2CDFF;
-  --color-purple-300: #E7E5FF;
-  --color-purple-500: #5B4AF4;
-  --color-purple-600: #5349B2;
+  --color-point-100: #E8E5FF;
+  --color-point-200: #D1C9FF;
+  --color-point-400: #8375FF;
+  --color-point-600: #5B4AF4;
+  --color-point-700: #4939E1;
 
   /* kakao-yellow */
   --color-kakao-yellow: #FFEB02;
 
   /* red */
-  --color-red-300: #FFDDDD;
-  --color-red-500: #CC1F1F;
+  --color-red-100: #FFDDDD;
+  --color-red-400: #FF4B4B;
+  --color-red-600: #CC1F1F;
 
+  /* blue */
+  --color-blue-100: #CEE7FF;
+  --color-blue-700: #0038A0;
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+/*
 @font-face {
   font-family: 'Pretendard';
   src: url('../fonts/PretendardVariable.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 /* 타이포그래피 클래스 */
 .font-h1 {

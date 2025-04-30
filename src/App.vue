@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
+  <RouterView />
   <header class="w-full flex justify-center items-center">
     <div class="mb-4">
       <nav>
@@ -13,8 +14,6 @@ import { RouterLink, RouterView } from 'vue-router'
       </nav>
     </div>
   </header>
-
-  <RouterView />
 </template>
 
 <style scoped></style>
