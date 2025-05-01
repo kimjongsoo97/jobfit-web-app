@@ -16,6 +16,13 @@ import ChallengeView from '../views/ChallengeView.vue'
 import ChallengeListPage from '../components/challenge/ChallengeListPage.vue'
 import MyPageView from '../views/MyPageView.vue'
 import MyPageInfoPage from '../components/mypage/user-info/MyPageInfoPage.vue'
+import CheckPasswordPage from '../components/mypage/user-info/ChangePasswordPage.vue'
+import ChangePasswordPage from '../components/mypage/user-info/ChangePasswordPage.vue'
+import MyPageChallengeListPage from '../components/mypage/user-challenge/MyPageChallengeListPage.vue'
+import MyPageChallengeDetailPage from '../components/mypage/user-challenge/MyPageChallengeDetailPage.vue'
+import MyPageSpecListPage from '../components/mypage/user-spec/MyPageSpecListPage.vue'
+import MyPageSpecUpdatePage from '../components/mypage/user-spec/MyPageSpecUpdatePage.vue'
+import MyPageFavoriteListPage from '../components/mypage/user-favorite/MyPageFavoriteListPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -112,6 +119,41 @@ const router = createRouter({
           path: 'info',
           name: 'mypage-info',
           component: MyPageInfoPage,
+        },
+        {
+          path: 'check-password',
+          name: 'mypage-info-check-password',
+          component: CheckPasswordPage,
+        },
+        {
+          path: 'change-password',
+          name: 'mypage-info-change-password',
+          component: ChangePasswordPage,
+        },
+        {
+          path: 'challenge',
+          name: 'mypage-challenge',
+          component: MyPageChallengeListPage,
+        },
+        {
+          path: 'challenge/:id',
+          name: 'mypage-challenge-detail',
+          component: MyPageChallengeDetailPage,
+        },
+        {
+          path: 'spec',
+          name: 'mypage-spec',
+          component: MyPageSpecListPage,
+        },
+        {
+          path: 'spec/update',
+          name: 'mypage-spec-update',
+          component: MyPageSpecUpdatePage,
+        },
+        {
+          path: 'favorite',
+          name: 'mypage-favorite',
+          component: MyPageFavoriteListPage,
         },
       ],
     },

@@ -1,15 +1,9 @@
-<script setup lang="ts">
-import Button from '../common/components/button/Button.vue'
-import BaseLayout from '../layouts/BaseLayout.vue'
-import OutLineButton from '../common/components/button/OutLineButton.vue'
-</script>
-
 <template>
   <BaseLayout>
-    <div class="relative felx flex-col">
+    <div class="relative felx flex-col mb-32">
 
       <!-- 히어로 섹션 -->
-      <section class="bg-gradient-to-b from-[#5b4af4] to-[#5349b2] h-[573px] relative">
+      <section class="bg-gradient-to-b from-point-600 to-point-700 h-[573px] relative">
         <div class="container mx-auto px-8 relative h-full flex items-center">
           <div class="max-w-[664px]">
             <p class="font-h4 text-gry-300 mb-4">
@@ -21,10 +15,10 @@ import OutLineButton from '../common/components/button/OutLineButton.vue'
             </h1>
 
             <div class="flex space-x-3">
-              <OutLineButton variant="point">
+              <OutLineButton variant="point" @click="handleChallengeSetting">
                 챌린지 설정하기
               </OutLineButton>
-              <OutLineButton variant="point">
+              <OutLineButton variant="point" @click="handleRecruitPosting">
                 채용공고 보러가기
               </OutLineButton>
             </div>
@@ -40,7 +34,7 @@ import OutLineButton from '../common/components/button/OutLineButton.vue'
       <section class="container mx-auto px-8 mt-32 relative z-10">
         <div class="grid grid-cols-2 gap-5">
           <!-- 첫 번째 카드 -->
-          <div class="bg-gradient-to-b from-[#f6f5ff]/50 to-[#d2cdff]/50 rounded-xl p-8 h-[400px] relative">
+          <div class="bg-gradient-to-b from-[#f6f5ff]/ 50 to-[#d2cdff]/50 rounded-xl p-8 h-[400px] relative">
             <img src="../assets/images/woman-programming.png" alt="Programming"
               class="absolute left-1/2 -translate-x-1/2 top-[-22px] w-[280px] h-[280px] object-cover" />
 
@@ -75,3 +69,21 @@ import OutLineButton from '../common/components/button/OutLineButton.vue'
     </div>
   </BaseLayout>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import BaseLayout from '../layouts/BaseLayout.vue'
+import OutLineButton from '../common/components/button/OutLineButton.vue'
+
+const router = useRouter();
+
+const handleChallengeSetting = () => {
+  router.push('/challenge');
+}
+
+const handleRecruitPosting = () => {
+  router.push('/recruit');
+}
+</script>
+
+<style></style>

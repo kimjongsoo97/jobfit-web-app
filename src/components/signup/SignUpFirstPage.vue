@@ -1,44 +1,62 @@
 <template>
   <div class="max-w-[480px] w-full">
-    <h2 class="text-[40px] font-semibold text-[#1b1c1f] leading-[56px]">
+    <h2 class="font-h1 text-gry-900 mb-1">
       회원가입
     </h2>
-    <p class="mt-1 text-[16px] font-semibold text-[#6f727c] leading-[30px]">
+    <p class="font-h4 text-gry-700 mb-8">
       회원가입하고 내 지원 가능성 확인해보세요!
     </p>
 
     <!-- 가입 버튼들 -->
-    <div class="mt-6 space-y-4">
-      <button @click="$router.push('/auth/signup/info')"
-        class="w-full h-[48px] bg-[#8375ff] rounded-xl flex items-center justify-center space-x-2 text-white">
-        <span class="w-6 h-6">
-          <!-- 이메일 아이콘 SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            class="w-full h-full">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        </span>
-        <span class="text-[14px] font-semibold">이메일로 가입하기</span>
-      </button>
+    <div class="space-y-4 mb-10">
+      <Button variant="point" @click="handleEmailSignUp">
+        <template #icon>
+          <Icon stroke="white">
+            <LineEmailIcon />
+          </Icon>
+        </template>
+        <template #text>
+          이메일로 가입하기
+        </template>
+      </Button>
 
-      <button class="w-full h-[48px] bg-[#ffeb02] rounded-xl flex items-center justify-center space-x-2">
-        <!-- <img src="@/assets/icons/kakao.svg" alt="Kakao" class="w-6 h-6" /> -->
-        <span class="text-[14px] font-semibold text-[#1b1c1f]">카카오로 시작하기</span>
-      </button>
+      <Button variant="kakao" @click="handleKakaoSignUp">
+        <template #icon>
+          <Icon fill="black">
+            <KakaoIcon />
+          </Icon>
+        </template>
+        <template #text>
+          카카오로 시작하기
+        </template>
+      </Button>
     </div>
 
     <!-- 하단 링크 -->
-    <div class="mt-[104px] flex items-center justify-end space-x-3">
-      <span class="text-[14px] font-semibold text-[#404249]">혹시 회원이신가요?</span>
-      <router-link to="/auth/login" class="text-[14px] font-semibold text-[#5b4af4]">회원정보 찾기</router-link>
+    <div class="flex items-center justify-center space-x-3">
+      <span class="font-h5 text-gry-800">혹시 회원이신가요?</span>
+      <router-link to="/auth/login" class="font-h5 text-point-600">로그인 하기</router-link>
     </div>
   </div>
 </template>
 
 <script setup lang='ts'>
 import { useRouter } from 'vue-router'
+import Button from '@/common/components/button/MainButton.vue'
+import Icon from '@/common/components/CustomIcon.vue'
+import LineEmailIcon from '@/assets/icons/LineEmailIcon_24.svg'
+import KakaoIcon from '@/assets/icons/KakaoIcon_20.svg'
+
 const router = useRouter()
+
+const handleEmailSignUp = () => {
+  router.push('/auth/signup/info')
+}
+
+const handleKakaoSignUp = () => {
+  // 카카오 로그인 구현
+  router.push('/auth/signup/info')
+}
 </script>
 
 <style></style>

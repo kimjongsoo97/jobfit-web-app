@@ -6,13 +6,13 @@
         <!-- <img src="@/assets/logo.svg" alt="JobFit" class="h-10 w-32" /> -->
       </RouterLink>
 
-      <div class="flex items-center justify-between font-h3 gap-20">
-        <RouterLink to="/recruit" class="cursor-pointer">채용공고</RouterLink>
-        <RouterLink to="/occupation" class="cursor-pointer">유망직업군</RouterLink>
-        <RouterLink to="/challenge" class="cursor-pointer">챌린지</RouterLink>
+      <div class="flex items-center justify-between font-h3 gap-20 text-gry-900">
+        <RouterLink v-for="menu in navMenus" :to="menu.path" :key="menu.name" class="cursor-pointer">{{ menu.name }}
+        </RouterLink>
       </div>
       <div class="flex items-center justify-between gap-4">
-        <RouterLink to="/auth/login" class="w-20 font-h5 text-center h-full cursor-pointer">로그인</RouterLink>
+        <RouterLink to="/auth/login" class="block w-20 font-h5 text-center text-gry-900 h-full cursor-pointer">로그인
+        </RouterLink>
         <Button variant="point" size="sm" @click="handleSignup">
           <template #text>회원가입</template>
         </Button>
@@ -23,13 +23,21 @@
 
 <script setup lang='ts'>
 import { RouterLink } from 'vue-router'
-import Button from '@/common/components/button/Button.vue'
+import Button from '@/common/components/button/MainButton.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const handleSignup = () => {
   router.push('/auth/signup')
 }
+
+const navMenus = [
+  { name: '채용공고', path: '/recruit' },
+  { name: '유망직업군', path: '/occupation' },
+  { name: '챌린지', path: '/challenge' },
+  { name: '테스트(버튼)', path: '/test/button' },
+  { name: '테스트(글자)', path: '/test/typo' },
+]
 </script>
 
 <style></style>

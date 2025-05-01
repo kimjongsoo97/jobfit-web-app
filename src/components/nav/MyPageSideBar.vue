@@ -30,7 +30,7 @@ const navList = [
   },
   {
     name: '즐겨찾기',
-    path: '/mypage/bookmarks',
+    path: '/mypage/favorite',
   },
 ]
 </script>

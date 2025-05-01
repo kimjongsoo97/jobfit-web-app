@@ -1,5 +1,5 @@
 <template>
-  <div :class="iconClass">
+  <div :class="iconClass" @click="emit('click')">
     <slot />
   </div>
 </template>
@@ -24,8 +24,8 @@ const props = defineProps({
     default: 'none',
   },
 });
-let fillColor: String;
-let strokeColor: String;
+let fillColor: string;
+let strokeColor: string;
 if (props.fill === 'white') {
   fillColor = 'fill-white';
 } else if (props.fill === 'gray') {
@@ -65,6 +65,7 @@ const iconClass = computed(() => {
     'flex items-center justify-center',
   ]
 })
+const emit = defineEmits(['click'])
 </script>
 
 <style></style>

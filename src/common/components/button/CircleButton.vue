@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang='ts'>
-import Icon from '@/common/components/Icon.vue'
+import Icon from '@/common/components/CustomIcon.vue'
 import LineStarIcon from '@/assets/icons/LineStarIcon_24.svg'
 import { computed } from 'vue';
 const props = defineProps({
@@ -20,8 +20,8 @@ const props = defineProps({
   },
 });
 
-let bgClass: String;
-let hoverBgClass: String;
+let bgClass = 'bg-gry-200';
+let hoverBgClass = 'hover:bg-gry-300';
 if (props.variant === 'point') {
   bgClass = 'bg-point-100';
   hoverBgClass = 'hover:bg-point-200';

@@ -45,10 +45,10 @@
 
       <!-- 하단 링크 -->
       <div class="flex items-center justify-between mt-5">
-        <a href="#" class="text-[14px] font-semibold text-[#404249]">아이디/비밀번호 찾기</a>
+        <a href="#" class="font-h5 text-gry-800 hover:text-gry-900">아이디/비밀번호 찾기</a>
         <div class="flex items-center space-x-2">
-          <span class="text-[14px] font-semibold text-[#6f727c]">계정이 없으신가요?</span>
-          <router-link to="/auth/signup" class="text-[14px] font-semibold text-[#5b4af4]">회원가입</router-link>
+          <span class="font-h5 text-gry-700">계정이 없으신가요?</span>
+          <router-link to="/auth/signup" class="font-h5 text-point-600 hover:text-point-700">회원가입</router-link>
         </div>
       </div>
     </form>
@@ -58,8 +58,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Button from '@/common/components/button/Button.vue'
-import Icon from '@/common/components/Icon.vue'
+import Button from '@/common/components/button/MainButton.vue'
+import Icon from '@/common/components/CustomIcon.vue'
 import KakaoIcon from '@/assets/icons/KakaoIcon_20.svg'
 const router = useRouter()
 const email = ref('')

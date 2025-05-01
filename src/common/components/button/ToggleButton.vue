@@ -7,19 +7,13 @@ const props = defineProps({
   },
 });
 
-let bgClass: String;
-let textClass: String;
-bgClass = 'bg-point-100 hover:bg-point-200';
-textClass = 'text-point-600 font-caption';
+const bgClass = 'bg-point-100 hover:bg-point-200';
+const textClass = 'text-point-600 font-caption';
 
-let sizeClass: String;
-let roundedClass: String;
-let pClass: String;
-let heightClass: String;
-sizeClass = 'w-fit';
-roundedClass = 'rounded-[20px]';
-pClass = 'py-2 px-2.5';
-heightClass = 'h-10';
+const sizeClass = 'w-fit';
+const roundedClass = 'rounded-[20px]';
+const pClass = 'py-2 px-2.5';
+const heightClass = 'h-10';
 
 const buttonClass = computed(() => {
   return [
@@ -37,7 +31,7 @@ const emit = defineEmits(['click']);
 </script>
 
 <template>
-  <button :class="buttonClass" :disabled="disabled" @click="emit('click')">
+  <button :class="buttonClass" :disabled="props.disabled" @click="emit('click')">
     <slot name="icon" />
     <div :class="textClass">
       <slot name="text" />

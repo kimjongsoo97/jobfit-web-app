@@ -79,18 +79,15 @@
 </template>
 
 <script setup lang='ts'>
-import Button from '../../common/components/button/Button.vue'
+import Button from '../../common/components/button/MainButton.vue'
 import KakaoIcon from '@/assets/icons/KakaoIcon_20.svg'
 import LineEmailIcon from '@/assets/icons/LineEmailIcon_24.svg'
-import Icon from '@/common/components/Icon.vue'
+import Icon from '@/common/components/CustomIcon.vue'
 import ToggleButton from '@/common/components/button/ToggleButton.vue'
 import StarIcon from '@/assets/icons/FillStarIcon_24.svg'
 import PlusIcon from '@/assets/icons/FillPlusIcon_24.svg'
 import LinePlusIcon from '@/assets/icons/LinePlusIcon_24.svg'
 import CircleButton from '@/common/components/button/CircleButton.vue'
-const handleClick = () => {
-  console.log('clicked');
-};
 </script>
 
 <style></style>

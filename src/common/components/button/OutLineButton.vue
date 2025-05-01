@@ -1,23 +1,21 @@
 <template>
-  <button :class="buttonClass" @click="onClick">
+  <button :class="buttonClass" @click="emit('click')">
     <slot />
   </button>
 </template>
 
 <script setup lang='ts'>
 import { computed } from 'vue';
-const emit = defineEmits<{
-  (e: 'click'): void
-}>()
+const emit = defineEmits(['click']);
 
 const props = defineProps<{
   variant: 'point' | 'gray'
   className?: string
 }>()
 
-let bgClass: String;
-let borderClass: String;
-let textClass: String;
+let bgClass: string;
+let borderClass: string;
+let textClass: string;
 if (props.variant === 'point') {
   bgClass = 'bg-white/10 hover:bg-white/20';
   borderClass = 'border-gry-400 border-1';
@@ -39,9 +37,6 @@ const buttonClass = computed(() => {
   ]
 })
 
-const onClick = () => {
-  emit('click')
-}
 </script>
 
 <style></style>
