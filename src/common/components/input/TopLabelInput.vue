@@ -11,6 +11,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+
+const emit=defineEmits(['update:modelValue'])
 const props = defineProps<{
   className?: string,
   id?: string,

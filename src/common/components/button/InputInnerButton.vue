@@ -56,7 +56,7 @@ const emit = defineEmits(['click']);
 </script>
 
 <template>
-  <button :class="buttonClass" :disabled="disabled" @click="emit('click')">
+  <button type="button" :class="buttonClass" :disabled="disabled" @click="emit('click')" >
     <div :class="textClass">
       <slot />
     </div>
