@@ -111,7 +111,7 @@ const otpCreate = async () => {
     return alert('유효한 이메일 형식으로 입력해주셔야 합니다!')
   }
   try {
-    await LoginApi.otpCreate(user.email, "");
+    await LoginApi.otpCreate(user.email, "signup");
     alert("인증번호 전송이 완료되었습니다.")
   }
   catch (e) {
@@ -127,7 +127,7 @@ const otpCheck = async (email: string, otp: string) => {
   }
 
   try {
-    const res = await LoginApi.otpCheck(email, otp, "")
+    const res = await LoginApi.otpCheck(email, otp, "signup")
     console.log('인증 성공:', res.data)
 
     isVerificationError.value = false
