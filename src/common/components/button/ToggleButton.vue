@@ -19,7 +19,7 @@ const buttonClass = computed(() => {
   return [
     `${bgClass}`,
     `${sizeClass}`,
-    `flex items-center justify-center`,
+    `flex items-center justify-center cursor-pointer`,
     `${roundedClass}`,
     `${pClass}`,
     `gap-1`,

@@ -22,6 +22,23 @@
         </ToggleButton>
       </ChallengeCard>
     </div>
+
+    <div v-if="challenges.length === 0" class="bg-gry-100 border border-gry-300 rounded-xl py-[100px]">
+      <div class="flex flex-col items-center justify-center gap-3">
+        <Icon width="36" height="36">
+          <ListAltIcon />
+        </Icon>
+        <p class="text-center font-h4 text-gry-700 whitespace-pre-line" style="line-height: 30px;">
+          챌린지가 없어요<br />
+          챌린지를 새로 등록해 보세요
+        </p>
+        <Button size="sm" @click="handleGoToChallengeList">
+          <template #text>
+            챌린지 보러가기
+          </template>
+        </Button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -33,11 +50,17 @@ import Icon from '@/common/components/CustomIcon.vue'
 import FillPlusIcon from '@/assets/icons/FillPlusIcon_24.svg'
 import { useRouter } from 'vue-router'
 import type { ChallengeCardInfo } from '@/common/types/challenge'
+import ListAltIcon from '@/assets/icons/ListAltIcon_36.svg'
+import Button from '@/common/components/button/MainButton.vue'
 
 const router = useRouter()
 
 const handleChallengeClick = (challengeId: string) => {
   router.push(`/mypage/challenge/${challengeId}`)
+}
+
+const handleGoToChallengeList = () => {
+  router.push('/challenge')
 }
 
 const challenges = ref<ChallengeCardInfo[]>([
