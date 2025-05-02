@@ -21,11 +21,11 @@ const LoginApi = {
   getProfile() {
     return api.get(`${BASE_URL}/profile`)
   },
-  otpCreate(email: string) {
-    return api.post(`/api/v1/otp`, { email })
+  otpCreate(email: string, type: string) {
+    return api.post(`/api/v1/otp`, { email, type })
   },
-  otpCheck(email: string, otp: string) {
-    return api.post(`/api/v1/otp/check`, { email, otp })
+  otpCheck(email: string, otp: string, type: string) {
+    return api.post(`/api/v1/otp/check`, { email, otp, type })
   }
 }
 export default LoginApi

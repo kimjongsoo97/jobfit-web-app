@@ -2,63 +2,50 @@
   <div class="min-h-screen bg-white">
 
     <!-- 메인 컨텐츠 -->
-    <main class="container mx-auto px-4 py-8">
-      <!-- 챌린지 제목과 설명 -->
-      <div class="mb-8">
-        <h1 class="text-4xl font-semibold text-[#1b1c1f] mb-2">챌린지</h1>
-        <p class="text-base font-semibold text-[#6f727c] leading-[30px]">
+    <main class="container mx-auto px-4 pt-14">
+      <h1 class="font-h1 text-gry-900 mb-2">챌린지</h1>
+      <div class="flex justify-between items-center mb-8">
+        <!-- 챌린지 제목과 설명 -->
+        <p class="font-h4 text-gry-700 leading-[30px]">
           채용공고와 00님의 적합도를 분석했어요.<br />
           스펙을 추가하여 회사 합격률을 올려보세요.
         </p>
-      </div>
 
-      <!-- 검색 바 -->
-      <div class="w-[480px] h-[52px] mb-8 relative">
-        <input type="text" placeholder="회사 이름을 검색해보세요"
-          class="w-full h-full px-4 bg-[#fafafc] border border-[#dedee4] rounded-xl text-base font-semibold placeholder-[#babdc3]" />
-        <button class="absolute right-4 top-1/2 -translate-y-1/2">
-          <span class="material-icons text-[#babdc3]">search</span>
-        </button>
+        <!-- 검색 바 -->
+        <SearchInput placeholder="회사 이름을 검색해보세요" v-model="searchCompanyName" inputWidth="w-full"
+          class="w-full max-w-[480px]">
+          <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSearchCompanyName">
+            <SearchIcon />
+          </Icon>
+        </SearchInput>
       </div>
 
       <!-- 진행중/완료 탭 -->
-      <div class="border-b border-[#dedee4] mb-8">
-        <div class="flex space-x-4 mb-2">
-          <button class="text-lg font-semibold text-[#404249] relative">
-            진행중 30
-            <div class="absolute bottom-0 left-0 w-[90px] h-[3px] bg-[#404249]"></div>
+      <div class="border-b border-gry-400 mb-9">
+        <div class="flex gap-3">
+          <button class="w-[90px] flex items-center justify-center font-h3 text-gry-800 relative pb-2"
+            :class="{ 'text-point-600': activeTab === 'progress' }" @click="handleActiveTab('progress')">
+            <div>
+              진행중 {{ progressCount }}
+            </div>
+            <div class="absolute -bottom-0.5 left-0 w-[90px] h-[3px] transition-all duration-300"
+              :class="activeTab === 'progress' ? 'bg-point-600' : 'bg-transparent'"></div>
           </button>
-          <button class="text-lg font-semibold text-[#989aa2]">완료 30</button>
+          <button class="w-[90px] flex items-center justify-center font-h3 text-gry-800 relative pb-2"
+            :class="{ 'text-point-600': activeTab === 'completed' }" @click="handleActiveTab('completed')">
+            <div>
+              완료 {{ completedCount }}
+            </div>
+            <div class="absolute -bottom-0.5 left-0 w-[90px] h-[3px] transition-all duration-300"
+              :class="activeTab === 'completed' ? 'bg-point-600' : 'bg-transparent'"></div>
+          </button>
         </div>
       </div>
 
       <!-- 챌린지 카드 그리드 -->
       <div class="grid grid-cols-3 gap-5">
-        <template v-for="i in 9" :key="i">
-          <div class="bg-[#fafafc] border border-[#efeff3] rounded-2xl p-4">
-            <div class="mb-4">
-              <h3 class="text-lg font-semibold text-[#404249] mb-1">Recruiting Manager</h3>
-              <p class="text-sm font-semibold text-[#989aa2]">(주)노타</p>
-            </div>
-            <div class="space-y-2">
-              <!-- 프로그레스 바 -->
-              <div class="relative h-4 bg-[#efeff3] rounded-lg overflow-hidden">
-                <div class="absolute left-0 top-0 h-full w-1/4 rounded-lg bg-gradient-to-r from-[#897cff] to-[#6255d6]">
-                </div>
-              </div>
-              <!-- 충족도 -->
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-semibold text-[#404249]">충족도</span>
-                <span class="text-base font-semibold text-[#5b4af4]">45%</span>
-              </div>
-              <!-- 마감일 -->
-              <div class="flex space-x-2 text-sm font-semibold text-[#404249]">
-                <span>마감일</span>
-                <span>D-day</span>
-              </div>
-            </div>
-          </div>
-        </template>
+        <ChallengeCard v-for="challengeCardInfo in challengeCardInfos" :key="challengeCardInfo.id"
+          :data="challengeCardInfo" />
       </div>
 
       <!-- 플로팅 버튼 -->
@@ -71,6 +58,130 @@
 </template>
 
 <script setup lang="ts">
+import SearchInput from '@/common/components/input/SearchInput.vue'
+import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
+import ChallengeCard from '@/common/components/card/ChallengeCard.vue'
+import type { ChallengeCardInfo } from '@/common/types/challenge'
+import { ref } from 'vue'
+
+const activeTab = ref<'progress' | 'completed'>('progress')
+const progressCount = ref(30)
+const completedCount = ref(30)
+const searchCompanyName = ref('')
+
+const handleSearchCompanyName = () => {
+  console.log(searchCompanyName.value)
+}
+
+
+const handleActiveTab = (tab: 'progress' | 'completed') => {
+  activeTab.value = tab
+  if (tab === 'progress') {
+    challengeCardInfos.value = challengeCardProgressInfos.value
+  } else {
+    challengeCardInfos.value = challengeCardCompletedInfos.value
+  }
+}
+
+const challengeCardProgressInfos = ref<ChallengeCardInfo[]>([
+  {
+    id: '1',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '2',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '3',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 90,
+    deadline: 'D-day'
+  },
+  {
+    id: '4',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '5',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 60,
+    deadline: 'D-day'
+  },
+  {
+    id: '6',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '7',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '8',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '9',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+])
+
+const challengeCardCompletedInfos = ref<ChallengeCardInfo[]>([
+  {
+    id: '1',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '2',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+  {
+    id: '3',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 90,
+    deadline: 'D-day'
+  },
+  {
+    id: '4',
+    title: 'Recruiting Manager',
+    companyName: '(주)노타',
+    progress: 45,
+    deadline: 'D-day'
+  },
+])
+
+const challengeCardInfos = ref<ChallengeCardInfo[]>(challengeCardProgressInfos.value)
+
 </script>
 
 <style>

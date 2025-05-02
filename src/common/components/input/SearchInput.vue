@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex w-fit h-full items-center">
+  <div class="relative flex h-full items-center">
     <input type="text" :name="props.name" :class="inputClass" v-model="inputValue" :placeholder="props.placeholder"
       :readonly="props.readonly" :id="id">
     <slot />
@@ -13,15 +13,13 @@ const props = defineProps<{
   modelValue?: string,
   placeholder?: string,
   name?: string,
-  readonly: {
-    type: boolean,
-    default: false,
-  },
+  readonly?: boolean,
   id?: string,
-  inputWidth: {
-    type: string,
-    default: 'w-[400px]',
-  },
+  inputWidth?: string,
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
 }>()
 
 const inputValue = computed<string>({

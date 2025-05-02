@@ -23,6 +23,8 @@ import MyPageChallengeDetailPage from '../components/mypage/user-challenge/MyPag
 import MyPageSpecListPage from '../components/mypage/user-spec/MyPageSpecListPage.vue'
 import MyPageSpecUpdatePage from '../components/mypage/user-spec/MyPageSpecUpdatePage.vue'
 import MyPageFavoriteListPage from '../components/mypage/user-favorite/MyPageFavoriteListPage.vue'
+import { isAuthenticated } from '@/util/guard'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,6 +94,7 @@ const router = createRouter({
       path: '/challenge',
       name: 'challenge',
       component: ChallengeView,
+      // beforeEnter: isAuthenticated,
       children: [
         {
           path: '',
@@ -114,6 +117,7 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPageView,
+      // beforeEnter: isAuthenticated,
       children: [
         {
           path: 'info',
