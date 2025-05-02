@@ -1,50 +1,49 @@
 <template>
-  <div class="min-h-screen bg-white">
+  <!-- 메인 컨텐츠 -->
+  <main class="mx-auto px-4 pt-14">
+    <!-- 채용공고 제목 -->
+    <h1 class="font-h1 text-gry-900 mb-2">채용공고</h1>
+    <p class="font-h4 text-gry-700 mb-4">
+      현재 채용중인 회사의 공고를 확인하세요
+    </p>
 
-    <!-- 메인 컨텐츠 -->
-    <main class="container mx-auto px-4 py-8">
-      <!-- 채용공고 제목 -->
-      <h1 class="font-h1 text-gry-900 mb-2">채용공고</h1>
-      <p class="font-h4 text-gry-700 mb-4">
-        현재 채용중인 회사의 공고를 확인하세요
-      </p>
+    <!-- 필터 섹션 -->
+    <div class="mb-8">
+      <div class="flex space-x-4 justify-between">
+        <!-- 직무/직군 필터 -->
+        <SearchSelector :options="selectedJobOptions" placeholder="직무/직군" v-model="selectedJob" />
 
-      <!-- 필터 섹션 -->
-      <div class="mb-8">
-        <div class="flex space-x-4 justify-between">
-          <!-- 직무/직군 필터 -->
-          <SearchSelector :options="selectedJobOptions" placeholder="직무/직군" v-model="selectedJob" />
+        <!-- 경력 필터 -->
+        <SearchSelector :options="selectedCareerOptions" placeholder="경력" v-model="selectedCareer" />
 
-          <!-- 경력 필터 -->
-          <SearchSelector :options="selectedCareerOptions" placeholder="경력" v-model="selectedCareer" />
+        <!-- 지역 필터 -->
+        <SearchSelector :options="selectedLocationOptions" placeholder="지역" v-model="selectedLocation" />
 
-          <!-- 지역 필터 -->
-          <SearchSelector :options="selectedLocationOptions" placeholder="지역" v-model="selectedLocation" />
+        <!-- 회사 이름 검색 -->
+        <SearchInput placeholder="회사 이름" v-model="searchCompanyName" inputWidth="w-full min-w-[400px]" class="w-full">
+          <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSearchCompanyName">
+            <SearchIcon />
+          </Icon>
+        </SearchInput>
 
-          <!-- 회사 이름 검색 -->
-          <SearchInput placeholder="회사 이름" v-model="searchCompanyName" inputWidth="w-full min-w-[400px]" class="w-full">
-            <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSearchCompanyName">
-              <SearchIcon />
-            </Icon>
-          </SearchInput>
-
-          <!-- 정렬 탭 -->
-          <SortButtonBox leftButtonText="최신순" rightButtonText="마감순" v-model:active="sortType" />
-        </div>
+        <!-- 정렬 탭 -->
+        <SortButtonBox leftButtonText="최신순" rightButtonText="마감순" v-model:active="sortType"
+          @update:status="handleSortChange" />
       </div>
+    </div>
 
-      <!-- 채용공고 카드 그리드 -->
-      <div class="grid grid-cols-2 gap-5">
-        <RecruitCard v-for="recruit in recruits" :key="recruit.id" :recruit="recruit" />
-      </div>
+    <!-- 채용공고 카드 그리드 -->
+    <div class="grid grid-cols-2 gap-5">
+      <RecruitCard v-for="recruit in recruits" :key="recruit.id" :recruit="recruit"
+        @viewDetail="handleViewDetail(recruit.id)" />
+    </div>
 
-      <!-- 플로팅 버튼 -->
-      <button
-        class="fixed right-40 bottom-10 w-[60px] h-[60px] bg-white border border-[#efeff3] rounded-full flex items-center justify-center">
-        <span class="material-icons">add</span>
-      </button>
-    </main>
-  </div>
+    <!-- 플로팅 버튼 -->
+    <button
+      class="fixed right-40 bottom-10 w-[60px] h-[60px] bg-white border border-[#efeff3] rounded-full flex items-center justify-center">
+      <span class="material-icons">add</span>
+    </button>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -56,6 +55,20 @@ import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
 import SortButtonBox from '@/common/components/button/SortButtonBox.vue'
 import RecruitCard from '@/common/components/card/RecruitCard.vue'
 import type { Recruit } from '@/common/types/recruit'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const handleViewDetail = (recruitId: string) => {
+  router.push(`/recruit/${recruitId}`)
+}
+
+const sortType = ref<'left' | 'right'>('left')
+
+const handleSortChange = (status: string) => {
+  sortType.value = status as 'left' | 'right'
+  // console.log('sortType', sortType.value)
+}
 
 const recruits: Recruit[] = [
   {
@@ -152,23 +165,7 @@ const selectedLocationOptions = [
 ]
 
 const searchCompanyName = ref('')
-const sortType = ref<'left' | 'right'>('left')
 
-// 정렬 타입이 변경될 때마다 실행되는 함수
-const handleSortChange = (type: 'left' | 'right') => {
-  if (type === 'left') {
-    // 최신순 정렬 로직
-    console.log('최신순으로 정렬')
-  } else {
-    // 마감순 정렬 로직
-    console.log('마감순으로 정렬')
-  }
-}
-
-// sortType이 변경될 때마다 handleSortChange 실행
-watch(sortType, (newValue) => {
-  handleSortChange(newValue)
-})
 </script>
 
 <style>

@@ -4,7 +4,7 @@
 
       <!-- 히어로 섹션 -->
       <section class="bg-gradient-to-b from-point-600 to-point-700 h-[573px] relative">
-        <div class="container mx-auto px-8 relative h-full flex items-center">
+        <div class="mx-auto px-8 relative h-full flex items-center">
           <div class="max-w-[664px]">
             <p class="font-h4 text-gry-300 mb-4">
               당신의 노력, 잘 맞는 기회에서 빛나야 하니까.
@@ -31,7 +31,7 @@
       </section>
 
       <!-- 하단 카드 섹션 -->
-      <section class="container mx-auto px-8 mt-32 relative z-10">
+      <section class="mx-auto px-8 mt-32 relative z-10">
         <div class="grid grid-cols-2 gap-5">
           <!-- 첫 번째 카드 -->
           <div class="bg-gradient-to-b from-[#f6f5ff]/ 50 to-[#d2cdff]/50 rounded-xl p-8 h-[400px] relative">

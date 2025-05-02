@@ -1,60 +1,57 @@
 <template>
-  <div class="min-h-screen bg-white">
+  <!-- 메인 컨텐츠 -->
+  <main class="container mx-auto px-4 pt-14">
+    <h1 class="font-h1 text-gry-900 mb-2">챌린지</h1>
+    <div class="flex justify-between items-center mb-8">
+      <!-- 챌린지 제목과 설명 -->
+      <p class="font-h4 text-gry-700 leading-[30px]">
+        채용공고와 00님의 적합도를 분석했어요.<br />
+        스펙을 추가하여 회사 합격률을 올려보세요.
+      </p>
 
-    <!-- 메인 컨텐츠 -->
-    <main class="container mx-auto px-4 pt-14">
-      <h1 class="font-h1 text-gry-900 mb-2">챌린지</h1>
-      <div class="flex justify-between items-center mb-8">
-        <!-- 챌린지 제목과 설명 -->
-        <p class="font-h4 text-gry-700 leading-[30px]">
-          채용공고와 00님의 적합도를 분석했어요.<br />
-          스펙을 추가하여 회사 합격률을 올려보세요.
-        </p>
+      <!-- 검색 바 -->
+      <SearchInput placeholder="회사 이름을 검색해보세요" v-model="searchCompanyName" inputWidth="w-full"
+        class="w-full max-w-[480px]">
+        <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSearchCompanyName">
+          <SearchIcon />
+        </Icon>
+      </SearchInput>
+    </div>
 
-        <!-- 검색 바 -->
-        <SearchInput placeholder="회사 이름을 검색해보세요" v-model="searchCompanyName" inputWidth="w-full"
-          class="w-full max-w-[480px]">
-          <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSearchCompanyName">
-            <SearchIcon />
-          </Icon>
-        </SearchInput>
+    <!-- 진행중/완료 탭 -->
+    <div class="border-b border-gry-400 mb-9">
+      <div class="flex gap-3">
+        <button class="w-[90px] flex items-center justify-center font-h3 text-gry-800 relative pb-2"
+          :class="{ 'text-point-600': activeTab === 'progress' }" @click="handleActiveTab('progress')">
+          <div>
+            진행중 {{ progressCount }}
+          </div>
+          <div class="absolute -bottom-0.5 left-0 w-[90px] h-[3px] transition-all duration-300"
+            :class="activeTab === 'progress' ? 'bg-point-600' : 'bg-transparent'"></div>
+        </button>
+        <button class="w-[90px] flex items-center justify-center font-h3 text-gry-800 relative pb-2"
+          :class="{ 'text-point-600': activeTab === 'completed' }" @click="handleActiveTab('completed')">
+          <div>
+            완료 {{ completedCount }}
+          </div>
+          <div class="absolute -bottom-0.5 left-0 w-[90px] h-[3px] transition-all duration-300"
+            :class="activeTab === 'completed' ? 'bg-point-600' : 'bg-transparent'"></div>
+        </button>
       </div>
+    </div>
 
-      <!-- 진행중/완료 탭 -->
-      <div class="border-b border-gry-400 mb-9">
-        <div class="flex gap-3">
-          <button class="w-[90px] flex items-center justify-center font-h3 text-gry-800 relative pb-2"
-            :class="{ 'text-point-600': activeTab === 'progress' }" @click="handleActiveTab('progress')">
-            <div>
-              진행중 {{ progressCount }}
-            </div>
-            <div class="absolute -bottom-0.5 left-0 w-[90px] h-[3px] transition-all duration-300"
-              :class="activeTab === 'progress' ? 'bg-point-600' : 'bg-transparent'"></div>
-          </button>
-          <button class="w-[90px] flex items-center justify-center font-h3 text-gry-800 relative pb-2"
-            :class="{ 'text-point-600': activeTab === 'completed' }" @click="handleActiveTab('completed')">
-            <div>
-              완료 {{ completedCount }}
-            </div>
-            <div class="absolute -bottom-0.5 left-0 w-[90px] h-[3px] transition-all duration-300"
-              :class="activeTab === 'completed' ? 'bg-point-600' : 'bg-transparent'"></div>
-          </button>
-        </div>
-      </div>
+    <!-- 챌린지 카드 그리드 -->
+    <div class="grid grid-cols-3 gap-5">
+      <ChallengeCard v-for="challengeCardInfo in challengeCardInfos" :key="challengeCardInfo.id"
+        :data="challengeCardInfo" />
+    </div>
 
-      <!-- 챌린지 카드 그리드 -->
-      <div class="grid grid-cols-3 gap-5">
-        <ChallengeCard v-for="challengeCardInfo in challengeCardInfos" :key="challengeCardInfo.id"
-          :data="challengeCardInfo" />
-      </div>
-
-      <!-- 플로팅 버튼 -->
-      <button
-        class="fixed right-40 bottom-10 w-[60px] h-[60px] bg-white border border-[#efeff3] rounded-full flex items-center justify-center">
-        <span class="material-icons">add</span>
-      </button>
-    </main>
-  </div>
+    <!-- 플로팅 버튼 -->
+    <button
+      class="fixed right-40 bottom-10 w-[60px] h-[60px] bg-white border border-[#efeff3] rounded-full flex items-center justify-center">
+      <span class="material-icons">add</span>
+    </button>
+  </main>
 </template>
 
 <script setup lang="ts">

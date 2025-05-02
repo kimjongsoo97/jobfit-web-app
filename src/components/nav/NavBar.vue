@@ -1,6 +1,6 @@
 <template>
   <nav class="sticky top-0 left-0 right-0 z-50 bg-white">
-    <div class="container mx-auto px-8 h-20 flex items-center justify-between shadow-xs">
+    <div class="mx-auto px-8 h-20 flex items-center justify-between shadow-xs">
       <RouterLink to="/" class="h-10 w-32">
         <JobFitLogo />
       </RouterLink>

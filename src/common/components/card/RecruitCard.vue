@@ -1,5 +1,6 @@
 <template>
-  <div class="relative flex gap-3 p-4 bg-gry-100 border border-gry-300 rounded-lg">
+  <div class="relative flex gap-3 p-4 bg-gry-100 hover:bg-gry-200 border border-gry-300 rounded-lg cursor-pointer"
+    @click="emit('viewDetail', recruit.id)">
     <div class="px-2 bg-white rounded-[10px] w-[52px] h-[30px] flex items-center justify-center">
       <span class="font-h4 text-point-600 text-nowrap">{{ displayDDay }}</span>
     </div>
@@ -55,6 +56,13 @@ import CircleButton from '@/common/components/button/CircleButton.vue'
 import ToggleButton from '@/common/components/button/ToggleButton.vue'
 import LinePlusIcon from '@/assets/icons/LinePlusIcon_24.svg'
 import Icon from '@/common/components/CustomIcon.vue'
+
+const emit = defineEmits<{
+  (e: 'viewDetail', recruitId: string): void,
+  (e: 'addChallenge', recruitId: string): void,
+  (e: 'addFavorite', recruitId: string): void
+}>()
+
 const props = defineProps<{
   recruit: Recruit
 }>()
@@ -65,11 +73,6 @@ const displayDDay = computed(() => {
   }
   return props.recruit.dDay
 })
-
-const emit = defineEmits<{
-  (e: 'addChallenge', recruitId: string): void,
-  (e: 'addFavorite', recruitId: string): void
-}>()
 </script>
 
 <style></style>

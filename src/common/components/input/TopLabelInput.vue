@@ -1,9 +1,9 @@
 <template>
   <div :class="props.className" class="flex flex-col gap-1 h-full items-center ">
-    <label v-if="props.isLabel" :class="labelClass" :for="randomId">{{ props.label }}</label>
+    <label v-if="isLabel" :class="labelClass" :for="randomId">{{ props.label }}</label>
     <div class="relative h-full">
-      <input :type="props.type" :name="props.name" :class="inputClass" v-model="inputValue"
-        :placeholder="props.placeholder" :readonly="props.readonly" :id="id">
+      <input :type="type" :name="name" :class="inputClass" v-model="inputValue" :placeholder="placeholder"
+        :readonly="props.readonly" :id="id">
       <slot />
     </div>
   </div>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const emit=defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps<{
   className?: string,
   id?: string,
@@ -20,22 +20,10 @@ const props = defineProps<{
   modelValue?: string,
   placeholder?: string,
   name?: string,
-  readonly: {
-    type: boolean,
-    default: false,
-  },
-  type: {
-    type: 'text' | 'password',
-    default: 'text',
-  },
-  isLabel: {
-    type: boolean,
-    default: false,
-  },
-  inputWidth: {
-    type: string,
-    default: 'w-[480px]',
-  },
+  readonly?: boolean,
+  type?: string,
+  isLabel?: boolean,
+  inputWidth?: string,
 }>()
 
 const inputValue = computed<string>({
@@ -45,6 +33,8 @@ const inputValue = computed<string>({
   }
 })
 
+const type = props.type ? props.type : 'text'
+const isLabel = props.isLabel ? props.isLabel : false
 
 const labelClass = computed<string>(() => {
   return 'block font-h5 text-gry-800 self-start'

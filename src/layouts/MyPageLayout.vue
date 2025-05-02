@@ -1,7 +1,7 @@
 <template>
   <BaseLayout>
     <div class="min-h-screen bg-white">
-      <main class="container mx-auto px-4 pt-32">
+      <main class="mx-auto px-4 pt-32">
         <h1 class="font-h1 text-gry-900 mb-8">마이페이지</h1>
         <div class="flex gap-10">
           <MyPageSideBar />
