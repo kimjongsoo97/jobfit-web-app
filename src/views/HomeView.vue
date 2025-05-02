@@ -3,7 +3,7 @@
     <div class="relative felx flex-col mb-32">
 
       <!-- 히어로 섹션 -->
-      <section class="bg-gradient-to-b from-point-600 to-point-700 h-[573px] relative">
+      <section class="bg-gradient-to-b from-point-600 to-point-700 h-[573px] rounded-br-[96px] relative">
         <div class="mx-auto px-8 relative h-full flex items-center">
           <div class="max-w-[664px]">
             <p class="font-h4 text-gry-300 mb-4">
