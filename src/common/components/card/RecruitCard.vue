@@ -32,19 +32,21 @@
       </div>
 
       <!-- 버튼 그룹 -->
-      <div class="flex space-x-2">
-        <CircleButton @click="emit('addFavorite', recruit.id)" />
-        <ToggleButton @click="emit('addChallenge', recruit.id)">
-          <template #icon>
-            <Icon fill="point">
-              <LinePlusIcon />
-            </Icon>
-          </template>
-          <template #text>
-            <span class="font-p1 text-point-600">챌린지 추가</span>
-          </template>
-        </ToggleButton>
-      </div>
+      <slot>
+        <div class="flex space-x-2">
+          <CircleButton @click="emit('addFavorite', recruit.id)" />
+          <ToggleButton @click="emit('addChallenge', recruit.id)">
+            <template #icon>
+              <Icon fill="point">
+                <LinePlusIcon />
+              </Icon>
+            </template>
+            <template #text>
+              <span class="font-p1 text-point-600">챌린지 추가</span>
+            </template>
+          </ToggleButton>
+        </div>
+      </slot>
     </div>
   </div>
 </template>

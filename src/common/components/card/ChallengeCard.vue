@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gry-100 border border-gry-300 rounded-2xl p-4">
+  <div class="bg-gry-100 hover:bg-gry-200 border border-gry-300 rounded-2xl p-4" @click="emit('click')">
     <div class="mb-4">
       <h3 class="font-h3 text-gry-900 mb-1">{{ props.data.title }}</h3>
       <p class="font-p1 text-gry-700">{{ props.data.companyName }}</p>
@@ -20,6 +20,8 @@
         <span>마감일</span>
         <span>{{ props.data.deadline }}</span>
       </div>
+      <!-- 버튼 슬롯 -->
+      <slot />
     </div>
   </div>
 </template>
@@ -30,6 +32,8 @@ import type { ChallengeCardInfo } from '@/common/types/challenge'
 const props = defineProps<{
   data: ChallengeCardInfo
 }>()
+
+const emit = defineEmits(['click'])
 </script>
 
 <style></style>
