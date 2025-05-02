@@ -6,15 +6,15 @@
 
     <!-- 로그인 폼 -->
     <form @submit.prevent="handleLogin" class="space-y-2">
-      <!-- 이메일 입력 -->
+      <!-- 아이디 입력 -->
       <div class="relative">
-        <input v-model="email" type="email" placeholder="이메일 주소"
+        <input v-model="user.username" type="username" placeholder="아이디"
           class="w-full h-[48px] px-3 rounded-xl border border-[#dedee4] text-[14px] font-semibold placeholder-[#babdc3]" />
       </div>
 
       <!-- 비밀번호 입력 -->
       <div class="relative">
-        <input v-model="password" type="password" placeholder="비밀번호"
+        <input v-model="user.password" type="password" placeholder="비밀번호"
           class="w-full h-[48px] px-3 rounded-xl border border-[#dedee4] text-[14px] font-semibold placeholder-[#babdc3]" />
       </div>
 
@@ -56,18 +56,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from '@/common/components/button/MainButton.vue'
 import Icon from '@/common/components/CustomIcon.vue'
 import KakaoIcon from '@/assets/icons/KakaoIcon_20.svg'
+import { useLoginStore } from '@/stores/login'
+
+const auth=useLoginStore();
+const user=reactive({
+    username:'',
+    password:'',
+})
 const router = useRouter()
-const email = ref('')
-const password = ref('')
+
+const disableSubmit=computed(()=>!(user.username&&user.password))
 
 const handleLogin = async () => {
+  console.log(user)
   try {
-    // TODO: 로그인 로직 구현
+    await auth.login(user)
     router.push('/')
   } catch (error) {
     console.error('로그인 실패:', error)
