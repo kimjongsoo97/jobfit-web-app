@@ -1,7 +1,9 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-import axios from 'axios'
-//유저 정보
+import { ref, computed } from 'vue';
+import { defineStore } from 'pinia';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // ✅ named import
+
+// 유저 정보 인터페이스
 interface UserInfo {
   userId: number;
   username: string;
@@ -9,50 +11,90 @@ interface UserInfo {
   email: string;
   createAt: string;
 }
-// 인증확인
+
+// JWT payload 인터페이스
+interface JwtPayload {
+  userId: number;
+  iat: number;
+  exp: number;
+}
+
+// 인증 상태 인터페이스
 interface AuthState {
   token: string;
   user: UserInfo | null;
 }
-// 로그인
+
+// 로그인 요청
 interface LoginRequest {
   username: string;
   password: string;
 }
-//로그인 응답
-interface LoginResponse {
-  accessToken: string;
-  user: UserInfo;
+
+// 서버 전체 응답 구조
+interface RawLoginResponse {
+  data: {
+    accessToken: string;
+    user?: UserInfo;
+  };
+  message: string;
+  httpStatus: string;
+  httpStatusCode: number;
 }
-// 초기 상태 설정, 토큰 없고 유저 눌값
+
+// 초기 상태
 const initState: AuthState = {
   token: '',
   user: null,
 };
-// 로그인 store 정의 추후에 beforeEnter로 편하게 url 로그인/비로그인 페이지 나누기위함 guard.ts에서서 사용
+
 export const useLoginStore = defineStore('auth', () => {
   const state = ref<AuthState>({ ...initState });
 
   const isLogin = computed(() => !!state.value.token);
   const username = computed(() => state.value.user?.username || '');
 
+  // JWT 토큰 디코딩 → 최소한 userId 확보
+  const decodeTokenToUser = (token: string): UserInfo => {
+    const payload = jwtDecode<JwtPayload>(token);
+    return {
+      userId: payload.userId,
+      username: '',
+      name: '',
+      email: '',
+      createAt: '',
+    };
+  };
 
-
+  // 로그인 API 처리
   const login = async (user: LoginRequest) => {
     try {
-      const { data } = await axios.post<LoginResponse>('/api/v1/user/login', user);
+      const response = await axios.post<RawLoginResponse>('/api/v1/user/login', user);
+      const raw = response.data;
+      const data = raw.data;
+
+      console.log('로그인 응답:', raw);
+
+      if (!data?.accessToken || typeof data.accessToken !== 'string') {
+        console.error('유효하지 않은 토큰입니다:', data?.accessToken);
+        throw new Error('로그인 실패: 서버에서 유효한 토큰을 받지 못했습니다.');
+      }
 
       state.value.token = data.accessToken;
-      state.value.user = data.user;
+
+      if (data.user) {
+        state.value.user = data.user;
+      } else {
+        state.value.user = decodeTokenToUser(data.accessToken);
+      }
 
       localStorage.setItem('auth', JSON.stringify(state.value));
-    } catch (error) {
-      console.error('로그인 실패:', error);
+    } catch (error: any) {
+      console.error('로그인 실패:', error.response?.data || error.message);
       throw error;
     }
   };
 
-  // 로그아웃은 따로 api 연동없이 localstorage에서 토큰을 삭제해주는 것으로 마무리
   const logout = () => {
     localStorage.removeItem('auth');
     state.value = { ...initState };
@@ -63,7 +105,19 @@ export const useLoginStore = defineStore('auth', () => {
   const load = () => {
     const auth = localStorage.getItem('auth');
     if (auth) {
-      state.value = JSON.parse(auth);
+      try {
+        const parsed = JSON.parse(auth);
+        state.value.token = parsed.token;
+
+        if (parsed.user) {
+          state.value.user = parsed.user;
+        } else if (parsed.token) {
+          state.value.user = decodeTokenToUser(parsed.token);
+        }
+      } catch (e) {
+        console.warn('로컬스토리지 파싱 실패:', e);
+        logout();
+      }
     }
   };
 
@@ -74,7 +128,15 @@ export const useLoginStore = defineStore('auth', () => {
     }
   };
 
-  load();
+  load(); // 초기화 시 로컬스토리지에서 복원
 
-  return { state, isLogin, username, login, logout, getToken, changeProfile };
+  return {
+    state,
+    isLogin,
+    username,
+    login,
+    logout,
+    getToken,
+    changeProfile,
+  };
 });
