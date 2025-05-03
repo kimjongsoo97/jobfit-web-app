@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "@types/kakao-js-sdk": "^1.39.5",
     "axios": "^1.9.0",
+    "jwt-decode": "^4.0.0",
     "pinia": "^3.0.1",
     "tailwindcss": "^4.1.4",
     "vite-svg-loader": "^5.1.0",

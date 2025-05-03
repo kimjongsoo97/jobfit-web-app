@@ -25,7 +25,7 @@ const LoginApi = {
     return api.post(`/api/v1/otp`, { email, type })
   },
   otpCheck(email: string, otp: string, type: string) {
-    return api.post(`/api/v1/otp/check`, { email, otp, type })
+    return api.post(`/api/v1/otp/check`, { email, type, otp })
   }
 }
 export default LoginApi

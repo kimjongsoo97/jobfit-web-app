@@ -40,11 +40,16 @@
           </InputInnerButton>
         </TopLabelInput>
 
-        <TopLabelInput v-model="verificationCode" name="verification-code" placeholder="인증번호를 입력해주세요">
-          <InputInnerButton variant="gray" class="absolute right-3 top-1/2 -translate-y-1/2" width="w-[97px]"
-            :disabled="true" @click="otpCheck">
-            인증번호 입력
-          </InputInnerButton>
+        <TopLabelInput v-model="user.otp" name="verification-code" placeholder="인증번호를 입력해주세요">
+          <InputInnerButton
+  variant="gray"
+  class="absolute right-3 top-1/2 -translate-y-1/2"
+  width="w-[97px]"
+  :disabled="!user.otp"
+  @click="() => otpCheck(user.email, user.otp)"
+>
+  인증번호 확인
+</InputInnerButton>
         </TopLabelInput>
         <div v-if="isVerificationError" class="font-caption text-red-400">{{ verificationErrorMsg }}</div>
       </div>
@@ -85,6 +90,7 @@ const user = reactive({
 const passwordsMatch = ref<boolean>(true)
 
 const handleSubmit = async () => {
+  console.log(user)
   if (!passwordsMatch.value) return
 
   try {
