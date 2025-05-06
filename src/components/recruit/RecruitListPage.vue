@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import SearchSelector from '@/common/components/input/SearchSelector.vue'
 import SearchInput from '@/common/components/input/SearchInput.vue'
 import Icon from '@/common/components/CustomIcon.vue'
@@ -58,6 +58,7 @@ import type { Recruit } from '@/common/types/recruit'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
 
 const handleViewDetail = (recruitId: string) => {
   router.push(`/recruit/${recruitId}`)

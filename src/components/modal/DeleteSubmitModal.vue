@@ -1,15 +1,14 @@
 <template>
   <CustomModal :width="'w-[330px]'">
     <template #header>
-      정말 삭제하시겠습니까?
+      삭제가 완료되었습니다
     </template>
     <template #button>
-      <Button @click="handleCloseModal" variant="gray">
-        <template #text>취소</template>
-      </Button>
-      <Button @click="handleDelete">
-        <template #text>삭제</template>
-      </Button>
+      <div class="w-[140px]">
+        <Button @click="handleCloseModal">
+          <template #text>확인</template>
+        </Button>
+      </div>
     </template>
   </CustomModal>
 </template>
@@ -18,14 +17,10 @@
 import CustomModal from '@/common/components/CustomModal.vue'
 import Button from '@/common/components/button/MainButton.vue'
 
-const emit = defineEmits(['closeModal', 'delete'])
+const emit = defineEmits(['closeModal'])
 
 const handleCloseModal = () => {
   emit('closeModal')
-}
-
-const handleDelete = () => {
-  emit('delete')
 }
 </script>
 
