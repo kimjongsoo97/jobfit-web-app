@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-[480px] w-full">
     <h2 class="font-h1 text-gry-900">
-      000님, 회원이<br />
-      되신걸 환영합니다
+      잡핏에 회원이<br />
+      되신걸 환영합니다 !
     </h2>
 
     <!-- 버튼 그룹 -->
