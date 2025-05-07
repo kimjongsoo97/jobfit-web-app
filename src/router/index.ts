@@ -94,7 +94,7 @@ const router = createRouter({
       path: '/challenge',
       name: 'challenge',
       component: ChallengeView,
-      // beforeEnter: isAuthenticated,
+      beforeEnter: isAuthenticated,
       children: [
         {
           path: '',
@@ -117,7 +117,7 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPageView,
-      beforeEnter: isAuthenticated,
+      // beforeEnter: isAuthenticated,
       children: [
         {
           path: 'info',

@@ -58,6 +58,7 @@ const handleUpdate = () => {
 onMounted(async () => {
   try {
     const { data } = await skillAPI.get()
+    console.log(data)
     const info = data.data
 
     skills.value = info.certificates || []

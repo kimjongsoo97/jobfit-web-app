@@ -18,7 +18,6 @@
         </Icon>
       </SearchInput>
 
-      <!-- 기술 자동완성 목록 -->
       <ul v-if="skillSuggestions.length" class="mt-2 border rounded bg-white p-2 shadow">
         <li v-for="s in skillSuggestions" :key="s" @click="handleSkillSearch(s)"
             class="cursor-pointer hover:bg-gray-100 px-2 py-1">
@@ -52,10 +51,6 @@
     <div>
       <h3 class="font-h3 text-gry-900 mb-2">경력사항</h3>
       <SearchInput placeholder="경력사항을 입력해 보세요 ex) 3년" v-model="careerInputValue">
-        <InputInnerButton width="w-[97px]" class="absolute right-3 top-1/2 -translate-y-1/2" variant="point"
-          @click="handleCareerSearch">
-          수정
-        </InputInnerButton>
       </SearchInput>
     </div>
   </div>
@@ -93,6 +88,7 @@ onMounted(async () => {
     // 전체 자격증 → 자동완성 기준용
     allCertificates.value = [...new Set([
       ...(info.certificates || []),  // 사용자가 입력한 것 포함
+      '정보보안', '전자회로', '전기기사', '전산응용설계사', '컴퓨터활용능력' // 예시 추가
     ])]
 
     //  실제 사용자가 선택한 기술
@@ -117,6 +113,7 @@ onMounted(async () => {
   }
 })
 
+
 // 자동완성 필터링
 watch(skillInputValue, (val) => {
   if (!val) return (skillSuggestions.value = [])
@@ -134,15 +131,21 @@ const handleSkillSearch = (selected: string) => {
   skillSuggestions.value = []
 }
 
-// 기타 스펙 추가
 const handleSpecSearch = () => {
   const value = specInputValue.value.trim()
-  if (value && !specs.value.includes(value)) specs.value.push(value)
-  specInputValue.value = ''
+
+  // 값이 있을 때만 처리하고 없으면 null로 처리
+  if (value) {
+    if (!specs.value.includes(value)) {
+      specs.value.push(value)
+    }
+    specInputValue.value = ''
+  } else {
+    specInputValue.value = null  // 값이 없을 경우 null로 처리
+  }
 }
 
 // 경력 사항
-const handleCareerSearch = () => {}
 
 const removeSkill = (skill: string) => {
   skills.value = skills.value.filter(s => s !== skill)
