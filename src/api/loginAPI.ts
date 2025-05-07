@@ -27,5 +27,14 @@ const LoginApi = {
   otpCheck(email: string, otp: string, type: string) {
     return api.post(`/api/v1/otp/check`, { email, type, otp })
   },
+  patchProfile(newPassword:string,confirmPassword:string){
+    return api.patch(`${BASE_URL}/profile`,{newPassword,confirmPassword});
+  },
+  findUsername(){
+    return api.post(`${BASE_URL}/find-username`)
+  },
+  findPassword(){
+    return api.post(`${BASE_URL}/find-password`) 
+  }
 }
 export default LoginApi
