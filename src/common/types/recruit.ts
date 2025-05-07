@@ -1,14 +1,16 @@
-export interface Recruit {
-  id: string
+export interface RecruitCardModel {
+  recruitId: string
   title: string
   companyName: string
-  salary: string
-  employmentType: string
-  career: string
-  location: string
-  createdAt: string
-  deadline: string
+  wage: string
+  workType: string
+  careerType: string
+  workPlace: string
+  registerDate: string
+  endDate: string
   dDay: string | number
+  isAddedToFavorite?: boolean
+  isAddedToChallenge?: boolean
 }
 
 export interface RecruitFilter {

@@ -21,10 +21,10 @@
       <!-- 채용공고 카드 그리드 -->
       <div class="grid grid-cols-2 gap-4">
 
-        <RecruitCard v-for="recruit in recruits" :key="recruit.id" :recruit="recruit">
+        <RecruitCard v-for="recruit in recruits" :key="recruit.recruitId" :recruit="recruit">
 
           <!-- 즐겨찾기 버튼 -->
-          <ToggleButton :isActive="true" @click="handleToggleFavorite(recruit.id)">
+          <ToggleButton :isActive="true" @click="handleToggleFavorite(recruit.recruitId)">
             <template #icon>
               <Icon fill="point">
                 <StarIcon />
@@ -70,9 +70,9 @@ import StarIcon from '@/assets/icons/FillStarIcon_24.svg'
 import ListAltIcon from '@/assets/icons/ListAltIcon_36.svg'
 import Button from '@/common/components/button/MainButton.vue'
 import { useRouter } from 'vue-router'
-import type { Recruit } from '@/common/types/recruit'
+import type { RecruitCardModel } from '@/common/types/recruit'
 import favoriteAPI from '@/api/favoriteAPI'
-import type { Favorite } from '@/models/favoriteModel'
+import type { FavoriteModel } from '@/models/favoriteModel'
 const sortBy = ref('left') // 'left' | 'right'
 
 const handleSortByChange = (sortBy_: string) => {
@@ -81,13 +81,13 @@ const handleSortByChange = (sortBy_: string) => {
   if (sortBy_ === 'left') {
     // console.log('left')
     recruits.value.sort((a, b) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      return new Date(b.registerDate).getTime() - new Date(a.registerDate).getTime()
     })
     // console.log('recruits', recruits.value)
   } else {
     // console.log('right')
     recruits.value.sort((a, b) => {
-      return new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+      return new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
     })
     // console.log('recruits', recruits.value)
   }
@@ -124,26 +124,26 @@ onMounted(() => {
   const favoritePromise = getFavorites()
   favoritePromise.then((res) => {
     // 최신순으로 정렬
-    res.sort((a: Favorite, b: Favorite) => {
+    res.sort((a: FavoriteModel, b: FavoriteModel) => {
       return new Date(b.registerDate).getTime() - new Date(a.registerDate).getTime()
     })
     console.log('res', res)
-    res.forEach((favorite: Favorite) => {
+    res.forEach((favorite: FavoriteModel) => {
       // d-day 계산
       const dDay = Math.ceil((new Date(favorite.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
       // career 추가 필요
       recruits.value.push(
         {
-          id: favorite.recruitId.toString(),
+          recruitId: favorite.recruitId.toString(),
           dDay: dDay < 0 ? '마감' : dDay,
           title: favorite.title,
           companyName: favorite.companyName,
-          salary: favorite.wage,
-          employmentType: favorite.jobType,
-          career: favorite.career,
-          location: favorite.workPlace,
-          createdAt: favorite.registerDate,
-          deadline: favorite.endDate,
+          wage: favorite.wage,
+          workType: favorite.jobType,
+          careerType: favorite.career,
+          workPlace: favorite.workPlace,
+          registerDate: favorite.registerDate,
+          endDate: favorite.endDate,
         }
       )
     })
@@ -152,7 +152,7 @@ onMounted(() => {
   })
 })
 
-const recruits = ref<Recruit[]>([])
+const recruits = ref<RecruitCardModel[]>([])
 // const recruits = ref<Recruit[]>([
 //   {
 //     id: "1",
