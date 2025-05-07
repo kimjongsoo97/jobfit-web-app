@@ -92,7 +92,6 @@ onMounted(async () => {
     // 전체 자격증 → 자동완성 기준용
     allCertificates.value = [...new Set([
       ...(info.certificates || []),  // 사용자가 입력한 것 포함
-      '정보보안', '전자회로', '전기기사', '전산응용설계사', '컴퓨터활용능력' // 예시 추가
     ])]
 
     //  실제 사용자가 선택한 기술

@@ -22,19 +22,34 @@
           <div v-if="isVerificationError" class="font-caption text-red-400">{{ verificationErrorMsg }}</div>
         </TopLabelInput>
       <div class="space-y-2">
-        <!-- 비밀번호 입력 -->
-        <div class="space-y-2">
-          <TopLabelInput type="password" class="relative" label="비밀번호" :isLabel="true" v-model="user.password"
-            name="password" placeholder="비밀번호를 입력해주세요" />
+      <!-- 비밀번호 입력 -->
+      <TopLabelInput
+        type="password"
+        class="relative"
+        label="비밀번호"
+        :isLabel="true"
+        v-model="user.password"
+        name="password"
+        placeholder="비밀번호를 입력해주세요"
+      />
+      <p v-if="user.password && !isStrongPassword" class="text-sm text-red-500 mt-1">
+        비밀번호는 8자 이상, 영문, 숫자, 특수문자를 모두 포함해야 합니다.
+      </p>
 
-          <TopLabelInput type="password" v-model="user.confirmPassword" name="confimPassword"
-            placeholder="비밀번호를 입력해주세요">
-            <div v-if="user.password!= user.confirmPassword" class="absolute right-3 top-1/2 -translate-y-1/2 font-caption text-red-400">
-              비밀번호가 일치하지 않습니다.
-            </div>
-          </TopLabelInput>
+      <!-- 비밀번호 확인 -->
+      <TopLabelInput
+        type="password"
+        v-model="user.confirmPassword"
+        name="confirmPassword"
+        placeholder="비밀번호를 다시 입력해주세요"
+      >
+        <div
+          v-if="user.confirmPassword && !isPasswordMatch"
+          class="absolute right-3 top-1/2 -translate-y-1/2 font-caption text-red-400"
+        >
+          비밀번호가 일치하지 않습니다.
         </div>
-
+      </TopLabelInput>
         <!-- 이메일 입력 -->
 
         <TopLabelInput class="relative" label="이메일 주소" :isLabel="true" v-model="user.email" name="email"
@@ -78,9 +93,15 @@ import LoginApi from '@/api/loginAPI'
 const router = useRouter()
 const verificationCode = ref('')
 const isVerificationUsernameError=ref<boolean>(false)
+const isUsernameTrue=ref<boolean>(true)
 const verificationUsernameErrorMsg = ref<string>('이미 존재하는 아이디 입니다')
 const isVerificationOtpError = ref<boolean>(false)
 const verificationOtpErrorMsg = ref<string>('인증번호가 일치하지 않습니다.')
+
+const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+
+const isStrongPassword = computed(() => passwordRegex.test(user.password));
+const isPasswordMatch = computed(() => user.password === user.confirmPassword);
 
 const isEmailValid = computed(() => {
   return user.email.includes('@');
@@ -97,22 +118,26 @@ const user = reactive({
 const passwordsMatch = ref<boolean>(true)
 
 const handleSubmit = async () => {
+  if(!user.name){
+    alert("이름을 입력해주세요")
+    return;
+  }
   if (!user.username) {
     alert("아이디를 입력해주세요.");
     return;  // 아이디가 입력되지 않으면 진행하지 않음
   }
-
-  if (user.password !== user.confirmPassword) {
-    alert("비밀번호가 일치하지 않습니다.");
-    return;  // 비밀번호가 일치하지 않으면 진행하지 않음
+  if(isUsernameTrue){
+    alert("아이디 중복체크를 진행해주세요")
+    return
+  }
+  if(!user.password){
+    alert("비밀번호를 입력해주세요")
+    return
   }
 
-  if (!user.otp) {
-    alert("OTP 인증을 진행해주셔야 합니다.");
-    return;  // OTP 인증이 없으면 진행하지 않음
-  }
+  
 
-  else{
+
     try {
     const payload = {
       name: user.name,
@@ -127,7 +152,6 @@ const handleSubmit = async () => {
     router.push('/auth/signup/complete')
   } catch (err: any) {
     console.error('회원가입 실패:', err.response?.data || err.message)
-  }
   }
 
 }
@@ -166,31 +190,30 @@ const otpCheck = async (email: string, otp: string) => {
     verificationErrorMsg.value = '인증번호가 일치하지 않습니다.'
   }
 }
-const checkUsername = async(username:string)=>{
-  if (!username){
-    isVerificationUsernameError.value=true
-    verificationUsernameErrorMsg.value='아이디를 입력해주세요'
-    return
+const checkUsername = async () => {
+  if (!user.username) {
+    isVerificationUsernameError.value = true;
+    verificationUsernameErrorMsg.value = '아이디를 입력해주세요';
+    return;
   }
-  try{
+
+  try {
     await LoginApi.checkUsername(user.username);
-    alert("아이디 중복확인이 완료되었습니다")
-    isVerificationUsernameError.value=false
+    alert("아이디 중복확인이 완료되었습니다");
+    isVerificationUsernameError.value = false;
+    isUsernameTrue.value = false; // 중복이 아니면 '아이디 사용 가능' 상태
+  } catch (err: any) {
+    if (err.response && err.response.status === 400) {
+      console.log("이미 가입된 아이디입니다");
+      alert("이미 가입된 아이디입니다.");
+      isVerificationUsernameError.value = true;
+      verificationUsernameErrorMsg.value = '이미 존재하는 아이디입니다.';
+    } else {
+      console.error("알 수 없는 오류 발생:", err);
+      alert("문제가 발생했습니다. 다시 시도해 주세요.");
+    }
   }
-  catch (err: any) {
-  // err.response는 서버에서 반환된 응답을 포함할 경우 사용할 수 있습니다.
-  if (err.response && err.response.status === 400) {
-    console.log("이미 가입된 아이디입니다");
-    alert("이미 가입된 아이디입니다.");
-  } else {
-    console.error("알 수 없는 오류 발생:", err);
-    alert("문제가 발생했습니다. 다시 시도해 주세요.");
-  }
-}
-
-
-}
-
+};
 
 </script>
 

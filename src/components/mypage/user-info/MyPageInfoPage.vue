@@ -8,21 +8,16 @@
     <!-- 회원 정보 폼 -->
     <div class="space-y-4">
       <!-- 이름 -->
-      <InfoInput label="이름" name="username" v-model="name" readonly="true" is-label="true" />
+      <InfoInput label="이름" name="username" v-model="user.name" readonly="true" is-label="true" />
 
       <!-- 이메일 -->
-      <InfoInput label="이메일" name="email" v-model="email" readonly="true" is-label="true" />
+      <InfoInput label="이메일" name="email" v-model="user.email" readonly="true" is-label="true" />
 
       <!-- 비밀번호 -->
-      <InfoInput class="relative w-fit" label="비밀번호" name="password" v-model="password" readonly="true" is-label="true">
-        <InputInnerButton variant="point" className="absolute right-2 top-1/2 -translate-y-1/2">
-          비밀번호 변경
-        </InputInnerButton>
-      </InfoInput>
 
       <!-- 회원정보 수정 버튼 -->
-      <Button variant="gray" width="w-[480px]" className="h-12 rounded-xl ml-[100px]">
-        <template #text>회원정보 수정</template>
+      <Button @click="goChangePassword" variant="gray" width="w-[480px]" className="h-12 rounded-xl ml-[100px]">
+        <template #text>비밀번호 변경</template>
       </Button>
 
       <!-- 회원 탈퇴 -->
@@ -36,17 +31,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import InfoInput from '@/common/components/input/InfoInput.vue';
 import Button from '@/common/components/button/MainButton.vue';
 import InputInnerButton from '@/common/components/button/InputInnerButton.vue';
 import LoginApi from '@/api/loginAPI';
 import {useRouter} from 'vue-router';
 
-const name = ref<string>('김종수')
-const email = ref<string>('rlawhdtn97@naver.com')
-const password = ref<string>('********')
 const router=useRouter()
+const user=ref({})
+const goChangePassword=()=>{
+  router.push('check-password')
+}
+const getProfile=async()=>{
+  try {
+    const data= await LoginApi.getProfile();
+    user.value=data.data.data
+    console.log(data)
+  }catch(error){
+    console.error('프로필 정보 불러오기 실패')
+  }
+}
 const withdraw = async () => {
   const confirmed = window.confirm('정말로 회원 탈퇴하시겠습니까? 탈퇴 후에는 복구가 불가능합니다.');
 
@@ -62,6 +67,9 @@ const withdraw = async () => {
     alert('회원 탈퇴 중 오류가 발생했습니다.');
   }
 }
+onMounted(()=>{
+  getProfile()
+})
 </script>
 
 <style scoped></style>
