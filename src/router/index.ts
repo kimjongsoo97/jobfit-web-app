@@ -117,7 +117,7 @@ const router = createRouter({
       path: '/mypage',
       name: 'mypage',
       component: MyPageView,
-      beforeEnter: isAuthenticated,
+      // beforeEnter: isAuthenticated,
       children: [
         {
           path: 'info',

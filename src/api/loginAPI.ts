@@ -4,7 +4,7 @@ const BASE_URL = '/api/v1/user'
 
 const LoginApi = {
   checkUsername(username: string) {
-    return api.post(`${BASE_URL}/checkemail`, { username })
+    return api.post(`${BASE_URL}/check/username`, { username })
   },
   signUp(userData: {
     username: string
@@ -26,6 +26,6 @@ const LoginApi = {
   },
   otpCheck(email: string, otp: string, type: string) {
     return api.post(`/api/v1/otp/check`, { email, type, otp })
-  }
+  },
 }
 export default LoginApi

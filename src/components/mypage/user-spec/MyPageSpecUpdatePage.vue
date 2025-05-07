@@ -1,4 +1,5 @@
 <template>
+  <!-- 메인 콘텐츠 영역 -->
   <div class="flex-1">
     <div class="flex items-center mb-4 relative">
       <h2 class="font-h2 text-gry-900">스펙 수정</h2>
@@ -9,58 +10,56 @@
 
     <hr class="border-gry-400 mb-6" />
 
-    <!-- 나의 기술 -->
+    <!-- 나의 기술 섹션 -->
     <div class="mb-6">
       <h3 class="font-h3 text-gry-900 mb-2">나의 기술</h3>
-      <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="skillInputValue">
-        <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSkillSearch">
-          <SearchIcon />
-        </Icon>
-      </SearchInput>
-
-      <!-- 기술 자동완성 목록 -->
-      <ul v-if="skillSuggestions.length" class="mt-2 border rounded bg-white p-2 shadow">
-        <li v-for="s in skillSuggestions" :key="s" @click="handleSkillSearch(s)"
-            class="cursor-pointer hover:bg-gray-100 px-2 py-1">
-          {{ s }}
-        </li>
-      </ul>
-
-      <div class="flex flex-wrap gap-3 mt-4">
+      <!-- 검색 입력창 -->
+      <div class="mb-4">
+        <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="skillInputValue">
+          <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSkillSearch">
+            <SearchIcon />
+          </Icon>
+        </SearchInput>
+      </div>
+      <!-- 기술 태그 목록 -->
+      <div class="flex flex-wrap gap-3">
         <TechBadge v-for="skill in skills" :key="skill" @click="removeSkill(skill)" is-close>{{ skill }}</TechBadge>
       </div>
     </div>
 
-    <!-- 기타 스펙 -->
+    <!-- 기타 스펙 섹션 -->
     <div class="mb-6">
       <h3 class="font-h3 text-gry-900 mb-2">기타 스펙</h3>
-      <SearchInput placeholder="Toeic : 930 형식으로 입력해 주세요" v-model="specInputValue">
-        <InputInnerButton width="w-[97px]" class="absolute right-3 top-1/2 -translate-y-1/2" variant="point"
-          @click="handleSpecSearch">
-          추가
-        </InputInnerButton>
-      </SearchInput>
-
-      <p class="font-h6 text-gry-600 mb-2">자격증 명의 정확한 명칭으로 입력 부탁드립니다. ex) Toeic : 930</p>
-
-      <div class="flex flex-wrap gap-3 mt-2">
+      <!-- 입력창 -->
+      <div class="flex items-center mb-4">
+        <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="specInputValue">
+          <InputInnerButton width="w-[97px]" class="absolute right-3 top-1/2 -translate-y-1/2" variant="point"
+            @click="handleSpecSearch">
+            추가
+          </InputInnerButton>
+        </SearchInput>
+      </div>
+      <p class="font-h6 text-gry-600 mb-2">자격증 명의 정확한 명칭으로 입력 부탁드립니다. ex)Toeic, opic</p>
+      <!-- 스펙 태그 목록 -->
+      <div class="flex flex-wrap gap-3">
         <TechBadge v-for="spec in specs" :key="spec" @click="removeSpec(spec)" is-close>{{ spec }}</TechBadge>
       </div>
     </div>
 
-    <!-- 경력사항 -->
+    <!-- 경력사항 섹션 -->
     <div>
       <h3 class="font-h3 text-gry-900 mb-2">경력사항</h3>
-      <SearchInput placeholder="경력사항을 입력해 보세요 ex) 3년" v-model="careerInputValue">
-        <InputInnerButton width="w-[97px]" class="absolute right-3 top-1/2 -translate-y-1/2" variant="point"
-          @click="handleCareerSearch">
-          수정
-        </InputInnerButton>
-      </SearchInput>
+      <div class="flex items-center">
+        <SearchInput placeholder="경력사항을 입력해 보세요 ex) 3년" v-model="careerInputValue">
+          <InputInnerButton width="w-[97px]" class="absolute right-3 top-1/2 -translate-y-1/2" variant="point"
+            @click="handleCareerSearch">
+            수정
+          </InputInnerButton>
+        </SearchInput>
+      </div>
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -93,6 +92,7 @@ onMounted(async () => {
     // 전체 자격증 → 자동완성 기준용
     allCertificates.value = [...new Set([
       ...(info.certificates || []),  // 사용자가 입력한 것 포함
+      '정보보안', '전자회로', '전기기사', '전산응용설계사', '컴퓨터활용능력' // 예시 추가
     ])]
 
     //  실제 사용자가 선택한 기술
@@ -142,7 +142,6 @@ const handleSpecSearch = () => {
 }
 
 // 경력 사항
-const handleCareerSearch = () => {}
 
 const removeSkill = (skill: string) => {
   skills.value = skills.value.filter(s => s !== skill)
