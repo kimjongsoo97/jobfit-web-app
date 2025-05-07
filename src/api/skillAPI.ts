@@ -1,9 +1,11 @@
 import api from '@/api'  // axios 인스턴스
 
+const BASE_URL=`/api/v1/user/skill`
+
 const skillAPI = {
   // 1. 사용자 스펙 조회
   get() {
-    return api.get('/api/v1/user/skill')
+    return api.get(`${BASE_URL}`)
   },
 
   // 2. 사용자 스펙 수정
@@ -12,12 +14,13 @@ const skillAPI = {
     specs: { [key: string]: string }[]
     career: string
   }) {
-    return api.patch('/api/v1/user/skill', payload)
+    return api.patch(`${BASE_URL}`, payload)
   },
-  getSearch(){
-    return api.get('/api/v1/user/certification')
+  getSearch(name:string){
+    return api.get(`${BASE_URL}/certification`,{
+      params:{name}
+    })
   },
-
 
 }
 

@@ -10,19 +10,29 @@
 
     <hr class="border-gry-400 mb-6" />
 
-    <!-- 나의 기술 섹션 -->
-    <div class="mb-6">
+   <!-- 나의 기술 (자격증 자동완성) -->
+   <div class="mb-6">
       <h3 class="font-h3 text-gry-900 mb-2">나의 기술</h3>
-      <!-- 검색 입력창 -->
-      <div class="mb-4">
-        <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="skillInputValue">
-          <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSkillSearch">
-            <SearchIcon />
-          </Icon>
-        </SearchInput>
-      </div>
-      <!-- 기술 태그 목록 -->
-      <div class="flex flex-wrap gap-3">
+      <!-- 검색 입력창 (돋보기 아이콘은 클릭 안 함) -->
+    <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="skillInputValue">
+      <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-default">
+        <SearchIcon />
+      </Icon>
+    </SearchInput>
+
+      <!-- 자동완성 리스트 -->
+      <ul v-if="skillSuggestions.length" class="mt-2 border rounded bg-white p-2 shadow max-h-60 overflow-auto">
+        <li
+          v-for="s in skillSuggestions"
+          :key="s"
+          @click="handleSkillSearch(s)"
+          class="cursor-pointer hover:bg-gray-100 px-2 py-1"
+        >
+          {{ s }}
+        </li>
+      </ul>
+
+      <div class="flex flex-wrap gap-3 mt-4">
         <TechBadge v-for="skill in skills" :key="skill" @click="removeSkill(skill)" is-close>{{ skill }}</TechBadge>
       </div>
     </div>
@@ -51,10 +61,7 @@
       <h3 class="font-h3 text-gry-900 mb-2">경력사항</h3>
       <div class="flex items-center">
         <SearchInput placeholder="경력사항을 입력해 보세요 ex) 3년" v-model="careerInputValue">
-          <InputInnerButton width="w-[97px]" class="absolute right-3 top-1/2 -translate-y-1/2" variant="point"
-            @click="handleCareerSearch">
-            수정
-          </InputInnerButton>
+
         </SearchInput>
       </div>
     </div>
@@ -63,6 +70,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { debounce } from 'lodash'
 import skillAPI from '@/api/skillAPI'
 import TechBadge from '@/common/components/badge/TechBadge.vue'
 import Button from '@/common/components/button/MainButton.vue'
@@ -73,8 +81,7 @@ import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
 
 const router = useRouter()
 
-const allCertificates = ref<string[]>([]) // 전체 자격증
-const skills = ref<string[]>([])          // 선택된 자격증
+const skills = ref<string[]>([])        
 const skillSuggestions = ref<string[]>([])
 const skillInputValue = ref('')
 
@@ -88,12 +95,6 @@ onMounted(async () => {
     const { data } = await skillAPI.get()
 
     const info = data.data
-
-    // 전체 자격증 → 자동완성 기준용
-    allCertificates.value = [...new Set([
-      ...(info.certificates || []),  // 사용자가 입력한 것 포함
-    ])]
-
     //  실제 사용자가 선택한 기술
     skills.value = info.certificates || []
 
@@ -116,12 +117,28 @@ onMounted(async () => {
   }
 })
 
+const fetchSkillSuggestions = debounce(async (keyword: string) => {
+  if (!keyword.trim()) {
+    skillSuggestions.value = []
+    return
+  }
+
+  try {
+    console.log(keyword)
+    const { data } = await skillAPI.getSearch(keyword)
+    console.log(data)
+    skillSuggestions.value = data.data || []
+  } catch (error) {
+    console.error('자격증 검색 실패:', error)
+  }
+}, 300)
+
+
+
 // 자동완성 필터링
+
 watch(skillInputValue, (val) => {
-  if (!val) return (skillSuggestions.value = [])
-  skillSuggestions.value = allCertificates.value
-    .filter(c => c.includes(val) && !skills.value.includes(c))
-    .slice(0, 5)
+  fetchSkillSuggestions(val)
 })
 
 // 기술 추가
