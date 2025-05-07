@@ -16,17 +16,16 @@
       </div>
 
       <!-- PDF 안내 박스 -->
-      <div class="bg-gry-200 rounded-xl py-3 px-4 w-[278px] cursor-pointer" @click="handleViewPdf">
+         <div class="cursor-pointer bg-[#F4F4F6] rounded-xl p-3 w-[278px]" @click="handleExternalLink">
         <div class="flex justify-between items-center">
           <div>
-            <p class="text-right font-h4 text-gry-900">관련된 자세한 정보를 보고싶다면?</p>
-            <p class="font-caption text-gry-700">한국고용원 향후10년직업 pdf보러가기</p>
+            <p class="text-right text-base font-semibold text-[#1B1C1F]">관련된 자세한 정보를 보고싶다면?</p>
+            <p class="text-sm text-[#6F727C]">한국고용원 향후10년직업 pdf보러가기</p>
           </div>
-          <Icon class="cursor-pointer">
-            <ArrowRigthIcon />
-          </Icon>
+          <i class="material-icons text-[#6F727C]">arrow_forward_ios</i>
         </div>
       </div>
+     
     </div>
 
     <!-- 직업 전망 카테고리 -->
@@ -78,19 +77,23 @@
           <div class="flex items-center mt-2">
             <span class="font-h4 text-gry-800 pr-4">{{ job.category }}</span>
             <span class="font-h4 text-blue-700 pr-1">{{ job.trend }}</span>
-            <Icon>
-              <DownArrowIcon />
-            </Icon>
+            <i class="material-icons ml-2" v-if="job.trend !== '현상유지'"
+              :class="job.trend.includes('상승') ? 'text-[#CC1F1F]' : 'text-[#0038A0]'">
+              {{ job.trend.includes('상승') ? 'arrow_upward' : 'arrow_downward' }}
+            </i>
+            <i class="material-icons ml-2" v-else>remove</i>
           </div>
         </div>
       </div>
     </div>
   </main>
+  
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import SearchInput from '@/common/components/input/SearchInput.vue'
+import trendAPI from '@/api/trendAPI'
 import Icon from '@/common/components/CustomIcon.vue'
 import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
 import ArrowRigthIcon from '@/assets/icons/EvaRightArrow_24.svg'
@@ -98,116 +101,49 @@ import UpArrowIcon from '@/assets/icons/UpArrowIcon_24.svg'
 import DownArrowIcon from '@/assets/icons/DownArrowIcon_24.svg'
 import RemoveIcon from '@/assets/icons/RemoveIcon_24.svg'
 
-const handleSearchJobName = () => {
-  console.log('searchJobName')
+interface Job {
+  title: string
+  category: string
+  trend: string
 }
 
-const handleViewPdf = () => {
-  console.log('viewPdf')
+const jobs = ref<Job[]>([])
+
+onMounted(async () => {
+  try {
+    const { data } = await trendAPI.all({ page: 1, size: 10 })
+    console.log('응답 구조:', data)
+
+    const allJobs = [
+      ...(data.data.growth || []),
+      ...(data.data.stable || []),
+      ...(data.data.decline || []),
+    ]
+
+    jobs.value = allJobs.map((trend: any) => ({
+      title: trend.name,
+      category: `#${trend.industry}`,
+      trend: trend.potential,
+      trendColor: getTrendColor(trend.potential),
+    }))
+  } catch (error) {
+    console.error('직업 데이터를 불러오는 중 오류 발생:', error)
+  }
+})
+
+
+
+function getTrendColor(potential: string): string {
+  if (potential.includes('상승')) return 'text-[#CC1F1F]'
+  if (potential.includes('하락')) return 'text-[#0038A0]'
+  return 'text-[#6F727C]'
 }
-
-const searchJobName = ref('')
-
-const upTrendJobs = ref([
-  {
-    title: '컴퓨터웨어기술자',
-    category: '#IT/공학',
-    trend: '2%이상 상승',
-  },
-  {
-    title: '반도체기술자',
-    category: '#제조',
-    trend: '1~2%이상 상승',
-  },
-  {
-    title: '수학자',
-    category: '#수학/연구원',
-    trend: '2%이상 상승',
-  },
-  {
-    title: '컴퓨터웨어기술자',
-    category: '#IT/공학',
-    trend: '2%이상 상승',
-  },
-  {
-    title: '반도체기술자',
-    category: '#제조',
-    trend: '1~2%이상 상승',
-  },
-  {
-    title: '수학자',
-    category: '#수학/연구원',
-    trend: '2%이상 상승',
-  },
-])
-
-const downTrendJobs = ref([
-  {
-    title: '부동산 중개인',
-    category: '#서비스업',
-    trend: '1~2% 하락',
-  },
-  {
-    title: '방문판매업',
-    category: '#서비스업',
-    trend: '2% 하락',
-  },
-  {
-    title: '철근공',
-    category: '#건설',
-    trend: '1~2% 하락',
-  },
-  {
-    title: '부동산 중개인',
-    category: '#서비스업',
-    trend: '1~2% 하락',
-  },
-  {
-    title: '방문판매업',
-    category: '#서비스업',
-    trend: '2% 하락',
-  },
-  {
-    title: '철근공',
-    category: '#건설',
-    trend: '1~2% 하락',
-  },
-])
-
-const noChangeTrendJobs = ref([
-  {
-    title: '의사',
-    category: '#의료',
-    trend: '현상유지',
-  },
-  {
-    title: '회계사',
-    category: '#회계/법인',
-    trend: '현상유지',
-  },
-  {
-    title: '도선사',
-    category: '#선박',
-    trend: '현상유지',
-  },
-  {
-    title: '의사',
-    category: '#의료',
-    trend: '현상유지',
-  },
-  {
-    title: '회계사',
-    category: '#회계/법인',
-    trend: '현상유지',
-  },
-  {
-    title: '도선사',
-    category: '#선박',
-    trend: '현상유지',
-  },
-])
+const handleExternalLink = () => {
+  window.location.href = 'https://www.keis.or.kr/keis/ko/proj/114/pblc/detail.do?pubIdx=9672&categoryIdx=125&pageIndex=2&pageItm=10&searchOrderSort=0&searchGbn=0';
+}
 
 </script>
+
 
 <style scoped>
 .material-icons {

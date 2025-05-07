@@ -27,6 +27,7 @@
 
       <!-- 회원 탈퇴 -->
       <button
+      @click="withdraw"
         class="w-[480px] h-12 rounded-xl ml-[100px] flex items-center justify-center text-gry-800 hover:text-gry-900">
         <span class="block font-h5 text-center transition-all duration-200 hover:underline">회원 탈퇴</span>
       </button>
@@ -39,11 +40,28 @@ import { ref } from 'vue'
 import InfoInput from '@/common/components/input/InfoInput.vue';
 import Button from '@/common/components/button/MainButton.vue';
 import InputInnerButton from '@/common/components/button/InputInnerButton.vue';
-
+import LoginApi from '@/api/loginAPI';
+import {useRouter} from 'vue-router';
 
 const name = ref<string>('김종수')
 const email = ref<string>('rlawhdtn97@naver.com')
 const password = ref<string>('********')
+const router=useRouter()
+const withdraw = async () => {
+  const confirmed = window.confirm('정말로 회원 탈퇴하시겠습니까? 탈퇴 후에는 복구가 불가능합니다.');
+
+  if (!confirmed) return;
+
+  try {
+    await LoginApi.withDraw();
+    alert('회원 탈퇴가 완료되었습니다.');
+    // 로그아웃 후 로그인 페이지로 이동 등 추가 처리
+    router.push('/auth/login');
+  } catch (error) {
+    console.error('회원 탈퇴 실패:', error);
+    alert('회원 탈퇴 중 오류가 발생했습니다.');
+  }
+}
 </script>
 
 <style scoped></style>
