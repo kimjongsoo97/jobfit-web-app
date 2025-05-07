@@ -14,7 +14,7 @@
    <div class="mb-6">
       <h3 class="font-h3 text-gry-900 mb-2">나의 기술</h3>
       <!-- 검색 입력창 (돋보기 아이콘은 클릭 안 함) -->
-    <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="skillInputValue">
+    <SearchInput placeholder="추가할 기술을 검색해 보세요" v-model="skillInputValue" class="w-fit">
       <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-default">
         <SearchIcon />
       </Icon>
@@ -81,7 +81,7 @@ import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
 
 const router = useRouter()
 
-const skills = ref<string[]>([])        
+const skills = ref<string[]>([])
 const skillSuggestions = ref<string[]>([])
 const skillInputValue = ref('')
 
