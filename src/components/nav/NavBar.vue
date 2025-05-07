@@ -9,11 +9,18 @@
         <RouterLink v-for="menu in navMenus" :to="menu.path" :key="menu.name" class="cursor-pointer">{{ menu.name }}
         </RouterLink>
       </div>
-      <div class="flex items-center justify-between gap-4">
+      <div v-if="!isAuthenticated" class="flex items-center justify-between gap-4">
         <RouterLink to="/auth/login" class="block w-20 font-h5 text-center text-gry-900 h-full cursor-pointer">로그인
         </RouterLink>
         <Button variant="point" size="sm" @click="handleSignup">
           <template #text>회원가입</template>
+        </Button>
+      </div>
+      <div v-if="isAuthenticated" class="flex items-center justify-between gap-4">
+        <button @click="logout" class="block w-20 font-h5 text-center text-gry-900 h-full cursor-pointer">로그아웃
+        </button>
+        <Button variant="gray" size="sm" @click="handleMypage">
+          <template #text>마이페이지</template>
         </Button>
       </div>
     </div>
@@ -25,10 +32,25 @@ import { RouterLink } from 'vue-router'
 import Button from '@/common/components/button/MainButton.vue'
 import { useRouter } from 'vue-router'
 import JobFitLogo from '@/assets/jobfit_logo.svg'
+import { useLoginStore } from '@/stores/login'
+import { computed } from 'vue'
+
+const auth = useLoginStore()
+const isAuthenticated = computed(() => auth.isLogin)
+console.log(isAuthenticated.value)
 
 const router = useRouter()
 const handleSignup = () => {
   router.push('/auth/signup')
+}
+
+const logout = () => {
+  auth.logout()
+  router.push('/')
+}
+
+const handleMypage = () => {
+  router.push('/mypage/info')
 }
 
 const navMenus = [
