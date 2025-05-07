@@ -38,7 +38,7 @@ instance.interceptors.response.use(
     if (error.response?.status === 401) {
       const { logout } = useLoginStore();
       logout();
-      router.push('/login?error=login_required');
+      router.push('/auth/login?error=login_required');
       return Promise.reject({ error: '로그인이 필요한 서비스입니다.' });
     }
     return Promise.reject(error);

@@ -15,7 +15,7 @@
         </SearchInput>
 
         <!-- 정렬 탭 -->
-        <SortButtonBox />
+        <SortButtonBox :sortBy="sortBy" @update:status="handleSortByChange" />
       </div>
 
       <!-- 채용공고 카드 그리드 -->
@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import SearchInput from '@/common/components/input/SearchInput.vue'
 import SortButtonBox from '@/common/components/button/SortButtonBox.vue'
 import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
@@ -71,8 +71,28 @@ import ListAltIcon from '@/assets/icons/ListAltIcon_36.svg'
 import Button from '@/common/components/button/MainButton.vue'
 import { useRouter } from 'vue-router'
 import type { Recruit } from '@/common/types/recruit'
+import favoriteAPI from '@/api/favoriteAPI'
+import type { Favorite } from '@/models/favoriteModel'
+const sortBy = ref('left') // 'left' | 'right'
 
-const sortBy = ref('latest') // 'latest' | 'deadline'
+const handleSortByChange = (sortBy_: string) => {
+  console.log('sortBy', sortBy_)
+  sortBy.value = sortBy_
+  if (sortBy_ === 'left') {
+    // console.log('left')
+    recruits.value.sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
+    // console.log('recruits', recruits.value)
+  } else {
+    // console.log('right')
+    recruits.value.sort((a, b) => {
+      return new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+    })
+    // console.log('recruits', recruits.value)
+  }
+}
+
 const router = useRouter()
 
 const handleSearchCompanyName = () => {
@@ -80,12 +100,57 @@ const handleSearchCompanyName = () => {
 }
 
 const handleToggleFavorite = (recruitId: string) => {
-  console.log('toggleFavorite', recruitId)
+  // 즐겨찾기 삭제
+  // favoriteId 추가 필요
+  favoriteAPI.deleteFavorite(recruitId).then((res) => {
+    console.log('res', res)
+    // refersh
+    window.location.reload()
+  }).catch((err) => {
+    console.log('err', err)
+  })
 }
 
 const handleGoToRecruitList = () => {
   router.push('/recruit')
 }
+
+const getFavorites = async () => {
+  const response = await favoriteAPI.getFavorite()
+  return response.data
+}
+
+onMounted(() => {
+  const favoritePromise = getFavorites()
+  favoritePromise.then((res) => {
+    // 최신순으로 정렬
+    res.sort((a: Favorite, b: Favorite) => {
+      return new Date(b.registerDate).getTime() - new Date(a.registerDate).getTime()
+    })
+    console.log('res', res)
+    res.forEach((favorite: Favorite) => {
+      // d-day 계산
+      const dDay = Math.ceil((new Date(favorite.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+      // career 추가 필요
+      recruits.value.push(
+        {
+          id: favorite.recruitId.toString(),
+          dDay: dDay < 0 ? '마감' : dDay,
+          title: favorite.title,
+          companyName: favorite.companyName,
+          salary: favorite.wage,
+          employmentType: favorite.jobType,
+          career: favorite.career,
+          location: favorite.workPlace,
+          createdAt: favorite.registerDate,
+          deadline: favorite.endDate,
+        }
+      )
+    })
+  }).catch((err) => {
+    console.log(err)
+  })
+})
 
 const recruits = ref<Recruit[]>([])
 // const recruits = ref<Recruit[]>([
