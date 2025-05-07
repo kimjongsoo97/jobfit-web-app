@@ -94,7 +94,7 @@ const router = createRouter({
       path: '/challenge',
       name: 'challenge',
       component: ChallengeView,
-      // beforeEnter: isAuthenticated,
+      beforeEnter: isAuthenticated,
       children: [
         {
           path: '',
