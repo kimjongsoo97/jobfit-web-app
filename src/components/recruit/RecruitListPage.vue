@@ -35,7 +35,7 @@
     <!-- 채용공고 카드 그리드 -->
     <div class="grid grid-cols-2 gap-5">
       <RecruitCard v-for="recruit in recruits" :key="recruit.recruitId" :recruit="recruit"
-        @viewDetail="handleViewDetail(recruit.recruitId)" />
+        @viewDetail="handleViewDetail(recruit.recruitId)" @addChallenge="handleAddChallenge(recruit.recruitId)" />
     </div>
 
     <!-- 플로팅 버튼 -->
@@ -57,11 +57,22 @@ import RecruitCard from '@/common/components/card/RecruitCard.vue'
 import type { RecruitCardModel } from '@/common/types/recruit'
 import { useRouter } from 'vue-router'
 import recruitAPI from '@/api/recuritAPI'
+import challengeAPI from '@/api/challengeAPI'
 const router = useRouter()
 
 
 const handleViewDetail = (recruitId: string) => {
   router.push(`/recruit/${recruitId}`)
+}
+
+const handleAddChallenge = (recruitId: string) => {
+  challengeAPI.createChallenge({ recruitId: Number(recruitId) })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(`챌린지 생성 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)
+    })
 }
 
 const sortType = ref<'left' | 'right'>('left')

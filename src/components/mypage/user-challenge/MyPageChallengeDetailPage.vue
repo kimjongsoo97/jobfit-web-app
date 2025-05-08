@@ -7,7 +7,7 @@
         <Icon fill="point" class="inline-block mr-2 cursor-pointer" @click="goBack">
           <EvaArrowIcon />
         </Icon>
-        {{ data.companyName }}
+        {{ challengeDetail.companyName }}
       </h2>
       <!-- 삭제 버튼 -->
       <Button size="sm" width="w-[82px]" variant="gray" @click="handleDelete">
@@ -16,18 +16,18 @@
     </div>
 
     <div class="border-t border-gray-300 py-4">
-      <div class="font-h3 text-gry-900">{{ data.title }}</div>
+      <div class="font-h3 text-gry-900">{{ challengeDetail.title }}</div>
     </div>
 
     <div class="flex items-center gap-4 justify-center mb-7">
       <div class="h-full flex items-center justify-center gap-2 min-w-20">
         <span class="font-h6 text-gry-800">충족도</span>
-        <span class="font-h4 text-point-600">{{ data.progress }}%</span>
+        <span class="font-h4 text-point-600">{{ challengeDetail.progress }}%</span>
       </div>
 
       <div class="relative w-full h-4 bg-gray-100 rounded-lg">
         <div class="absolute left-0 top-0 h-full bg-gradient-to-r from-point-600 to-point-400 rounded-lg"
-          :style="{ width: `${data.progress}%` }">
+          :style="{ width: `${challengeDetail.progress}%` }">
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
           <span class="font-h4 text-red-600">충족점</span>
         </div>
         <div class="flex justify-center items-center bg-red-100/30 w-full h-[60px]">
-          <span class="font-h4 text-gry-900">{{ data.result.good.join(', ') }}</span>
+          <span class="font-h4 text-gry-900">{{ challengeDetail.strengths }}</span>
         </div>
       </div>
 
@@ -54,7 +54,7 @@
           <span class="font-h4 text-blue-700">미흡점</span>
         </div>
         <div class="flex justify-center items-center bg-blue-100/30 w-full h-[60px]">
-          <span class="font-h4 text-gry-900">{{ data.result.bad.join(', ') }}</span>
+          <span class="font-h4 text-gry-900">{{ challengeDetail.weaknesses }}</span>
         </div>
       </div>
     </div>
@@ -63,20 +63,22 @@
     <div class="mt-8">
       <h3 class="font-h3 text-gry-900 mb-4">공고내용</h3>
       <div class="text-gry-800 font-p1 space-y-2">
-        <p v-for="(item, index) in data.content" :key="index">* {{ item }}</p>
+        <p v-for="(item, index) in challengeDetail.content" :key="index">* {{ item }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// 필요한 경우 여기에 스크립트 로직을 추가하세요
+import { ref, onMounted } from 'vue'
 import EvaArrowIcon from '@/assets/icons/EvaArrow_24.svg'
 import Icon from '@/common/components/CustomIcon.vue'
 import { useRouter } from 'vue-router'
 import Button from '@/common/components/button/MainButton.vue'
 import GoodIcon from '@/assets/icons/GoodIcon_24.svg'
 import BadIcon from '@/assets/icons/BadIcon_24.svg'
+import challengeAPI from '@/api/challengeAPI'
+import type { ChallengeDetailInfo } from '@/models/challengeModel'
 
 const router = useRouter()
 
@@ -88,29 +90,33 @@ const handleDelete = () => {
   console.log('삭제')
 }
 
-interface ChallengeDetail {
-  id: string
-  title: string
-  companyName: string
-  progress: number
-  result: {
-    good: string[]
-    bad: string[]
-  }
-  content: string[]
-}
+const challengeId = ref<string>('')
 
-const data: ChallengeDetail = {
-  id: '1',
-  title: '물리치료사,작업치료사',
-  companyName: '예담요양원',
-  progress: 45,
-  result: {
-    good: ['물리치료사, 학력'],
-    bad: ['작업치료사, 운전면허, 경력'],
-  },
-  content: ['물리,작업치료사 구인', '어르신들 건강체크 및 치료사 업무', '자차 이용자 환영']
-}
+onMounted(() => {
+  challengeId.value = router.currentRoute.value.params.id as string
+  challengeAPI.getChallenge(challengeId.value)
+    .then((res) => {
+      challengeDetail.value = res.data
+    })
+    .catch((err) => {
+      console.log(`챌린지 상세 조회 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)
+    })
+})
+
+const challengeDetail = ref<ChallengeDetailInfo>({
+  challengeId: 0,
+  userId: 0,
+  recruitId: 0,
+  title: '',
+  companyName: '',
+  registrationDate: '',
+  progress: 0,
+  careerType: '',
+  strengths: '',
+  weaknesses: '',
+  content: '',
+})
+
 </script>
 
 <style></style>

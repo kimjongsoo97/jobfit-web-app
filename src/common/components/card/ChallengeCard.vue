@@ -18,7 +18,7 @@
       <!-- 마감일 -->
       <div class="flex space-x-2 font-h5 text-gry-800">
         <span>마감일</span>
-        <span>{{ props.data.deadline }}</span>
+        <span>{{ props.data.registrationDate }}</span>
       </div>
       <!-- 버튼 슬롯 -->
       <slot />
@@ -27,10 +27,10 @@
 </template>
 
 <script setup lang='ts'>
-import type { ChallengeCardInfo } from '@/common/types/challenge'
+import type { ChallengeListInfo } from '@/models/challengeModel'
 
 const props = defineProps<{
-  data: ChallengeCardInfo
+  data: ChallengeListInfo
 }>()
 
 const emit = defineEmits(['click'])

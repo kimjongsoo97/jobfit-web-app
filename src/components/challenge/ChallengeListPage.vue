@@ -10,12 +10,12 @@
       </p>
 
       <!-- 검색 바 -->
-      <SearchInput placeholder="회사 이름을 검색해보세요" v-model="searchCompanyName" inputWidth="w-full"
+      <!-- <SearchInput placeholder="회사 이름을 검색해보세요" v-model="searchCompanyName" inputWidth="w-full"
         class="w-full max-w-[480px]">
         <Icon class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer" @click="handleSearchCompanyName">
           <SearchIcon />
         </Icon>
-      </SearchInput>
+      </SearchInput> -->
     </div>
 
     <!-- 진행중/완료 탭 -->
@@ -42,7 +42,7 @@
 
     <!-- 챌린지 카드 그리드 -->
     <div class="grid grid-cols-3 gap-5">
-      <ChallengeCard v-for="challengeCardInfo in challengeCardInfos" :key="challengeCardInfo.id"
+      <ChallengeCard v-for="challengeCardInfo in challengeCardInfos" :key="challengeCardInfo.challengeId"
         :data="challengeCardInfo" />
     </div>
 
@@ -55,20 +55,25 @@
 </template>
 
 <script setup lang="ts">
-import SearchInput from '@/common/components/input/SearchInput.vue'
-import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
+// import SearchInput from '@/common/components/input/SearchInput.vue'
+// import SearchIcon from '@/assets/icons/SearchIcon_24.svg'
 import ChallengeCard from '@/common/components/card/ChallengeCard.vue'
-import type { ChallengeCardInfo } from '@/common/types/challenge'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import challengeAPI from '@/api/challengeAPI'
+import type { ChallengeListInfo } from '@/models/challengeModel'
 
 const activeTab = ref<'progress' | 'completed'>('progress')
-const progressCount = ref(30)
-const completedCount = ref(30)
-const searchCompanyName = ref('')
+const progressCount = ref(0)
+const completedCount = ref(0)
+// const searchCompanyName = ref('')
+const challengeCardProgressInfos = ref<ChallengeListInfo[]>([])
+const challengeCardCompletedInfos = ref<ChallengeListInfo[]>([])
+const challengeCardInfos = ref<ChallengeListInfo[]>([])
 
-const handleSearchCompanyName = () => {
-  console.log(searchCompanyName.value)
-}
+// 검색 기능 추가 시 사용
+// const handleSearchCompanyName = () => {
+//   console.log(searchCompanyName.value)
+// }
 
 
 const handleActiveTab = (tab: 'progress' | 'completed') => {
@@ -80,104 +85,138 @@ const handleActiveTab = (tab: 'progress' | 'completed') => {
   }
 }
 
-const challengeCardProgressInfos = ref<ChallengeCardInfo[]>([
-  {
-    id: '1',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '2',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '3',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 90,
-    deadline: 'D-day'
-  },
-  {
-    id: '4',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '5',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 60,
-    deadline: 'D-day'
-  },
-  {
-    id: '6',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '7',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '8',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '9',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-])
+onMounted(() => {
+  // 챌린지 목록 조회
+  challengeAPI.getChallenges()
+    .then((res) => {
+      res.data.forEach((challenge: ChallengeListInfo) => {
+        if (challenge.progress < 100) {
+          challengeCardProgressInfos.value.push({
+            challengeId: challenge.challengeId,
+            userId: challenge.userId,
+            recruitId: challenge.recruitId,
+            title: challenge.title,
+            companyName: challenge.companyName,
+            progress: challenge.progress,
+            registrationDate: challenge.registrationDate,
+          })
+        } else {
+          challengeCardCompletedInfos.value.push({
+            challengeId: challenge.challengeId,
+            userId: challenge.userId,
+            recruitId: challenge.recruitId,
+            title: challenge.title,
+            companyName: challenge.companyName,
+            progress: challenge.progress,
+            registrationDate: challenge.registrationDate,
+          })
+        }
+      })
+      challengeCardInfos.value = challengeCardProgressInfos.value
+      progressCount.value = challengeCardProgressInfos.value.length
+      completedCount.value = challengeCardCompletedInfos.value.length
+    })
+    .catch((err) => {
+      console.log(`챌린지 목록 조회 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)
+    })
+})
 
-const challengeCardCompletedInfos = ref<ChallengeCardInfo[]>([
-  {
-    id: '1',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '2',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-  {
-    id: '3',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 90,
-    deadline: 'D-day'
-  },
-  {
-    id: '4',
-    title: 'Recruiting Manager',
-    companyName: '(주)노타',
-    progress: 45,
-    deadline: 'D-day'
-  },
-])
+// const challengeCardProgressInfos = ref<ChallengeCardInfo[]>([])
+//   {
+//     id: '1',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '2',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '3',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 90,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '4',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '5',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 60,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '6',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '7',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '8',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '9',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+// ])
 
-const challengeCardInfos = ref<ChallengeCardInfo[]>(challengeCardProgressInfos.value)
+// const challengeCardCompletedInfos = ref<ChallengeCardInfo[]>([])
+//   {
+//     id: '1',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '2',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '3',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 90,
+//     deadline: 'D-day'
+//   },
+//   {
+//     id: '4',
+//     title: 'Recruiting Manager',
+//     companyName: '(주)노타',
+//     progress: 45,
+//     deadline: 'D-day'
+//   },
+// ])
 
 </script>
 

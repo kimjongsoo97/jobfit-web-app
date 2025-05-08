@@ -18,7 +18,7 @@
       <!-- 북마크/챌린지 버튼 -->
       <div class="flex justify-end space-x-2 mb-8">
         <CircleButton @click="addFavorite" />
-        <ToggleButton @click="addChallenge">
+        <ToggleButton @click="addChallenge(recruit.id)">
           <template #icon>
             <Icon fill="point">
               <LinePlusIcon />
@@ -246,7 +246,7 @@ import LinePlusIcon from '@/assets/icons/LinePlusIcon_24.svg'
 import { computed } from 'vue'
 import EvaArrowIcon from '@/assets/icons/EvaArrow_24.svg'
 import { useRouter } from 'vue-router'
-
+import challengeAPI from '@/api/challengeAPI'
 const router = useRouter()
 
 // HTML 특수 문자와 개행 문자를 처리하는 함수
@@ -329,8 +329,14 @@ const addFavorite = () => {
   console.log('addFavorite')
 }
 
-const addChallenge = () => {
-  console.log('addChallenge')
+const addChallenge = (recruitId: string) => {
+  challengeAPI.createChallenge({ recruitId: Number(recruitId) })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(`챌린지 생성 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)
+    })
 }
 
 const goBack = () => {
