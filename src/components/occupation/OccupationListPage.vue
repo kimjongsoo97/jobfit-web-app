@@ -16,7 +16,7 @@
       </div>
 
       <!-- PDF 안내 박스 -->
-         <div class="cursor-pointer bg-[#F4F4F6] rounded-xl p-3 w-[278px]" @click="handleExternalLink">
+      <div class="cursor-pointer bg-[#F4F4F6] rounded-xl p-3 w-[278px]" @click="handleExternalLink">
         <div class="flex justify-between items-center">
           <div>
             <p class="text-right text-base font-semibold text-[#1B1C1F]">관련된 자세한 정보를 보고싶다면?</p>
@@ -25,7 +25,7 @@
           <i class="material-icons text-[#6F727C]">arrow_forward_ios</i>
         </div>
       </div>
-     
+
     </div>
 
     <!-- 직업 전망 카테고리 -->
@@ -87,11 +87,11 @@
       </div>
     </div>
   </main>
-  
+
 </template>
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import SearchInput from '@/common/components/input/SearchInput.vue'
 import trendAPI from '@/api/trendAPI'
 import Icon from '@/common/components/CustomIcon.vue'
@@ -145,19 +145,4 @@ const handleExternalLink = () => {
 </script>
 
 
-<style scoped>
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
-}
-</style>
+<style scoped></style>
