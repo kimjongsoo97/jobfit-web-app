@@ -23,6 +23,8 @@ import MyPageChallengeDetailPage from '../components/mypage/user-challenge/MyPag
 import MyPageSpecListPage from '../components/mypage/user-spec/MyPageSpecListPage.vue'
 import MyPageSpecUpdatePage from '../components/mypage/user-spec/MyPageSpecUpdatePage.vue'
 import MyPageFavoriteListPage from '../components/mypage/user-favorite/MyPageFavoriteListPage.vue'
+import FindUsernamePage from '../components/login/FindUsernamePage.vue'
+import FindPasswordPage from '../components/login/FindPasswordPage.vue'
 import { isAuthenticated } from '@/util/guard'
 
 
@@ -58,6 +60,16 @@ const router = createRouter({
           path: 'signup/complete',
           name: 'signup-complete',
           component: SignUpSubmitPage,
+        },
+        {
+          path: 'find-username',
+          name: 'find-username',
+          component: FindUsernamePage,
+        },
+        {
+          path: 'find-password',
+          name: 'find-password',
+          component: FindPasswordPage,
         },
       ],
     },

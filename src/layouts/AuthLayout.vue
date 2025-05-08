@@ -11,9 +11,10 @@
           <p class="mt-5 font-h4 text-gry-100">
             회원 가입하고 채용공고에 대한
           </p>
-          <p class="mt-1 font-h4 text-gry-100">
+          <p class="mt-1 mb-3 font-h4 text-gry-100">
             상세한 정보를 얻어보세요!
           </p>
+          <router-link to="/" class="bg-gry-400/30 rounded-lg p-2 font-p1 text-gry-100 hover:bg-gray-400/25 transition-all duration-200">홈페이지</router-link>
         </div>
         <!-- 하단 이미지 -->
         <img src="@/assets/images/woman-portfolio.png" alt="Young woman putting together her portfolio"

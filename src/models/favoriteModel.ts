@@ -1,4 +1,4 @@
-export interface Favorite {
+export interface FavoriteModel {
   favoriteId: number
   userId: number
   recruitId: number

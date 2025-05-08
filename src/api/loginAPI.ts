@@ -30,11 +30,11 @@ const LoginApi = {
   patchProfile(newPassword:string,confirmPassword:string){
     return api.patch(`${BASE_URL}/profile`,{newPassword,confirmPassword});
   },
-  findUsername(){
-    return api.post(`${BASE_URL}/find-username`)
+  findUsername(email: string, otp: string, type: string) {
+    return api.post(`${BASE_URL}/find-username`, { email, type, otp })
   },
-  findPassword(){
-    return api.post(`${BASE_URL}/find-password`) 
-  }
+  findPassword(email: string, otp: string, type: string) {
+    return api.post(`${BASE_URL}/find-password`, { email, type, otp })
+  },
 }
 export default LoginApi

@@ -45,7 +45,7 @@
 
       <!-- 하단 링크 -->
       <div class="flex items-center justify-between mt-5">
-        <a href="#" class="font-h5 text-gry-800 hover:text-gry-900">아이디/비밀번호 찾기</a>
+        <router-link to="/auth/find-username" class="font-h5 text-gry-800 hover:text-gry-900">아이디/비밀번호 찾기</router-link>
         <div class="flex items-center space-x-2">
           <span class="font-h5 text-gry-700">계정이 없으신가요?</span>
           <router-link to="/auth/signup" class="font-h5 text-point-600 hover:text-point-700">회원가입</router-link>
