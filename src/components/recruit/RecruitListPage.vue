@@ -60,18 +60,26 @@ import recruitAPI from '@/api/recuritAPI'
 import challengeAPI from '@/api/challengeAPI'
 const router = useRouter()
 
-
+const isAddingChallenge = ref(false)
 const handleViewDetail = (recruitId: string) => {
+  // 버블링 방지
+  if (isAddingChallenge.value) {
+    isAddingChallenge.value = false
+    return
+  }
   router.push(`/recruit/${recruitId}`)
 }
 
 const handleAddChallenge = (recruitId: string) => {
+  // 버블링 방지
+  isAddingChallenge.value = true
   challengeAPI.createChallenge({ recruitId: Number(recruitId) })
     .then((res) => {
       console.log(res)
     })
     .catch((err) => {
       console.log(`챌린지 생성 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)
+      
     })
 }
 
@@ -119,7 +127,7 @@ const searchCompanyName = ref('')
 const handleSearch = () => {
   console.log('searchCompanyName', searchCompanyName.value)
   const sortType_ = sortType.value === 'left' ? '최신순' : '마감일순'
-  recruitAPI.getRecruit(
+  recruitAPI.getRecruits(
     0,
     10,
     sortType_,
@@ -129,7 +137,7 @@ const handleSearch = () => {
     selectedCareer.value).then((res) => {
     console.log('res', res)
     recruits.value = []
-    res.data.content.forEach((recruit: RecruitCardModel) => {
+    res.data.forEach((recruit: RecruitCardModel) => {
       const dDay = Math.ceil((new Date(recruit.endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
       recruits.value.push({
         recruitId: recruit.recruitId,

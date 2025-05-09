@@ -72,8 +72,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import BaseLayout from '../layouts/BaseLayout.vue'
-import OutLineButton from '../common/components/button/OutLineButton.vue'
+import BaseLayout from '@/layouts/BaseLayout.vue'
+import OutLineButton from '@/common/components/button/OutLineButton.vue'
 
 const router = useRouter();
 

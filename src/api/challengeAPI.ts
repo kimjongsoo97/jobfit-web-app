@@ -11,6 +11,7 @@ const challengeAPI = {
     return response.data
   },
   createChallenge: async (challenge: CreateChallengeRequest) => {
+    console.log('전송할 챌린지 데이터:', JSON.stringify(challenge, null, 2));
     const response = await api.post('/api/v1/challenge', challenge)
     return response.data
   },

@@ -63,14 +63,14 @@
     <div class="mt-8">
       <h3 class="font-h3 text-gry-900 mb-4">공고내용</h3>
       <div class="text-gry-800 font-p1 space-y-2">
-        <p v-for="(item, index) in challengeDetail.content" :key="index">* {{ item }}</p>
+        <p v-html="formattedContent"></p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import EvaArrowIcon from '@/assets/icons/EvaArrow_24.svg'
 import Icon from '@/common/components/CustomIcon.vue'
 import { useRouter } from 'vue-router'
@@ -79,7 +79,9 @@ import GoodIcon from '@/assets/icons/GoodIcon_24.svg'
 import BadIcon from '@/assets/icons/BadIcon_24.svg'
 import challengeAPI from '@/api/challengeAPI'
 import type { ChallengeDetailInfo } from '@/models/challengeModel'
+import { formatTextToHtml } from '@/util/format'
 
+const formattedContent = computed(() => formatTextToHtml(challengeDetail.value.content))
 const router = useRouter()
 
 const goBack = () => {

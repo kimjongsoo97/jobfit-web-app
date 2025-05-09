@@ -32,9 +32,9 @@
           챌린지가 없어요<br />
           챌린지를 새로 등록해 보세요
         </p>
-        <Button size="sm" @click="handleGoToChallengeList">
+        <Button size="sm" @click="handleGoToRecruitList">
           <template #text>
-            챌린지 보러가기
+            채용공고 보러가기
           </template>
         </Button>
       </div>
@@ -54,21 +54,31 @@ import Button from '@/common/components/button/MainButton.vue'
 import challengeAPI from '@/api/challengeAPI'
 import type { ChallengeListInfo } from '@/models/challengeModel'
 
+const isDeletingChallenge = ref(false)
 const router = useRouter()
 const challenges = ref<ChallengeListInfo[]>([])
 
 const handleChallengeClick = (challengeId: number) => {
+  // 버블링 방지
+  if (isDeletingChallenge.value) {
+    isDeletingChallenge.value = false
+    return
+  }
   router.push(`/mypage/challenge/${challengeId}`)
 }
 
-const handleGoToChallengeList = () => {
-  router.push('/challenge')
+const handleGoToRecruitList = () => {
+  router.push('/recruit')
 }
 
 const handleChallengeDeleteClick = (challengeId: number) => {
+  // 버블링 방지
+  isDeletingChallenge.value = true
   challengeAPI.deleteChallenge(challengeId.toString())
     .then((res) => {
       console.log(res)
+      // 새로고침
+      window.location.reload()
     })
     .catch((err) => {
       console.log(`챌린지 삭제 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)

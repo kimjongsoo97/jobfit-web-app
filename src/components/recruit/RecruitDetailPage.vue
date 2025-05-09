@@ -8,17 +8,17 @@
           <Icon fill="point" class="inline-block mr-2 cursor-pointer" @click="goBack">
             <EvaArrowIcon />
           </Icon>
-          {{ recruit.title }}
+          {{ recruitDetail.title }}
         </h2>
         <p class="font-h4 text-gry-700 mb-4">
-          {{ recruit.description }}
+          {{ recruitDetail.summary }}
         </p>
       </div>
 
       <!-- 북마크/챌린지 버튼 -->
       <div class="flex justify-end space-x-2 mb-8">
         <CircleButton @click="addFavorite" />
-        <ToggleButton @click="addChallenge(recruit.id)">
+        <ToggleButton @click="addChallenge(recruitDetail.recruitId)">
           <template #icon>
             <Icon fill="point">
               <LinePlusIcon />
@@ -42,25 +42,25 @@
               <div class="border-b border-gry-400 py-2 px-3">
                 <div class="flex h-[30px] items-center">
                   <span class="w-[90px] font-h4 text-gry-800">모집직종</span>
-                  <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.jobType }}</span>
+                  <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.jobType }}</span>
                 </div>
               </div>
               <div class="border-b border-gry-400 py-2 px-3">
                 <div class="flex h-[30px] items-center">
                   <span class="w-[90px] font-h4 text-gry-800">모집인원</span>
-                  <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.recruitCount }}</span>
+                  <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.recruitNumber }}</span>
                 </div>
               </div>
               <div class="border-b border-gry-400 py-2 px-3">
                 <div class="flex h-[30px] items-center">
                   <span class="w-[90px] font-h4 text-gry-800">학력</span>
-                  <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.education }}</span>
+                  <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.educationType }}</span>
                 </div>
               </div>
               <div class="border-b border-gry-400 py-2 px-3">
                 <div class="flex h-[30px] items-center">
                   <span class="w-[90px] font-h4 text-gry-800">전공</span>
-                  <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.major }}</span>
+                  <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.educationType }}</span>
                 </div>
               </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="border-b border-gry-400 py-2 px-3">
               <div class="flex items-center">
                 <span class="w-[90px] font-h4 text-gry-800 self-start">직무내용</span>
-                <div class="pl-5 flex-1 font-p1 text-gry-900" v-html="formattedJobDescription">
+                <div class="pl-5 flex-1 font-p1 text-gry-900" v-html="formattedContent">
                 </div>
               </div>
             </div>
@@ -78,44 +78,43 @@
             <div class="grid grid-cols-3 border-b border-gry-400 py-2 px-3">
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">근무형태</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.workType }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.workType }}</span>
               </div>
               <div class="flex items-center h-full">
                 <span class="w-[90px] font-h4 text-gry-800">근무일수</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.workDays }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.workSchedule }}</span>
               </div>
               <div class="flex items-center h-full">
                 <span class="w-[90px] font-h4 text-gry-800">총 근무 시간</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.totalWorkHours }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.totalTime }}</span>
               </div>
             </div>
 
             <div class="border-b border-gry-400 py-2 px-3">
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">근무시간</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.workHours }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.workTime }}</span>
               </div>
             </div>
 
             <div class="border-b border-gry-400 py-2 px-3">
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">급여</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.salary }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.wage }}</span>
               </div>
             </div>
 
             <div class="border-b border-gry-400 py-2 px-3">
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">경력조건</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.career }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.careerType }}</span>
               </div>
             </div>
 
             <div class="border-b border-gry-400 py-2 px-3">
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">필요자격</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.jobInfo.workCondition.requiredCertificates
-                }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.applyDocument }}</span>
               </div>
             </div>
           </div>
@@ -127,22 +126,22 @@
             <div class="grid grid-cols-2 border-b border-gry-400 py-2">
               <div class="flex h-[30px] items-center">
                 <span class="w-[120px] font-h4 text-gry-800">전형방법</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.recruitmentProcess.processMethod }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.recruitmentMethod }}</span>
               </div>
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">접수방법</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.recruitmentProcess.applicationMethod }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.applyMethod }}</span>
               </div>
             </div>
 
             <div class="grid grid-cols-2 border-b border-gry-400 py-2">
               <div class="flex h-[30px] items-center text-nowrap">
                 <span class="w-[120px] font-h4 text-gry-800">제출 서류및 준비물</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.recruitmentProcess.requiredDocuments }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.applyDocument }}</span>
               </div>
               <div class="flex h-[30px] items-center">
                 <span class="w-[90px] font-h4 text-gry-800">접수마감</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.recruitmentProcess.deadline }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.endDate }}</span>
               </div>
             </div>
           </div>
@@ -152,46 +151,49 @@
         <section>
           <h2 class="font-h2 text-gry-900 mb-4">담당자</h2>
           <div class="bg-white border-t border-gry-400">
-            <div class="grid grid-cols-3 gap-x-2 py-2 border-b border-gry-400">
+            <div class="grid grid-cols-2 gap-x-2 py-2 border-b border-gry-400">
               <div class="flex h-[30px] items-center">
                 <span class="w-[120px] font-h4 text-gry-800">성명</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.name }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.manager }}</span>
               </div>
 
               <div class="flex h-[30px] items-center">
-                <span class="w-[120px] font-h4 text-gry-800">부서</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.department }}</span>
+                <span class="w-[90px] font-h4 text-gry-800">부서</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.managerOrganization }}</span>
               </div>
 
-              <div class="flex h-[30px] items-center">
+              <!-- <div class="flex h-[30px] items-center">
                 <span class="w-[120px] font-h4 text-gry-800">휴대전화</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.mobile }}</span>
-              </div>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.managerPhonenumber }}</span>
+              </div> -->
             </div>
 
             <div class="grid grid-cols-2 py-2 border-b border-gry-400">
               <div class="flex h-[30px] items-center">
                 <span class="w-[120px] font-h4 text-gry-800">전화번호</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.phone }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.managerPhonenumber }}</span>
               </div>
-
               <div class="flex h-[30px] items-center">
-                <span class="w-[120px] font-h4 text-gry-800">팩스</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.fax }}</span>
+                <span class="w-[90px] font-h4 text-gry-800">접수 마감</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.endDate }}</span>
               </div>
+              <!-- <div class="flex h-[30px] items-center">
+                <span class="w-[120px] font-h4 text-gry-800">팩스</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.managerPhonenumber }}</span>
+              </div> -->
             </div>
 
-            <div class="grid grid-cols-2 py-2 border-b border-gry-400">
+            <!-- <div class="grid grid-cols-2 py-2 border-b border-gry-400">
               <div class="flex h-[30px] items-center">
                 <span class="w-[120px] font-h4 text-gry-800">이메일</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.email }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.companyAddress }}</span>
               </div>
 
               <div class="flex h-[30px] items-center">
                 <span class="w-[120px] font-h4 text-gry-800">접수 마감</span>
-                <span class="pl-5 font-p1 text-gry-900">{{ recruit.contactPerson.deadline }}</span>
+                <span class="pl-5 font-p1 text-gry-900">{{ recruitDetail.endDate }}</span>
               </div>
-            </div>
+            </div> -->
           </div>
         </section>
       </section>
@@ -202,27 +204,27 @@
           <div class="space-y-4">
             <div class="flex">
               <span class="min-w-[92px] font-h4 text-gry-800">사업장명</span>
-              <span class="pl-4 font-p1 text-gry-900">{{ recruit.companyInfo.name }}</span>
+              <span class="pl-4 font-p1 text-gry-900">{{ recruitDetail.companyName }}</span>
             </div>
-            <div class="flex">
+            <!-- <div class="flex">
               <span class="min-w-[92px] font-h4 text-gry-800">대표자</span>
-              <span class="pl-4 font-p1 text-gry-900">{{ recruit.companyInfo.representative }}</span>
+              <span class="pl-4 font-p1 text-gry-900">{{ recruitDetail.companyName }}</span>
             </div>
             <div class="flex">
               <span class="min-w-[92px] font-h4 text-gry-800">근로자수</span>
-              <span class="pl-4 font-p1 text-gry-900">{{ recruit.companyInfo.employeeCount }}</span>
-            </div>
+              <span class="pl-4 font-p1 text-gry-900">{{ recruitDetail.companyName }}</span>
+            </div> -->
             <div class="flex">
               <span class="min-w-[92px] font-h4 text-gry-800">가입보험</span>
-              <span class="pl-4 font-p1 text-gry-900">{{ recruit.companyInfo.insurance }}</span>
+              <span class="pl-4 font-p1 text-gry-900">{{ recruitDetail.insurance }}</span>
             </div>
             <div class="flex">
               <span class="min-w-[92px] font-h4 text-gry-800">사업요약내용</span>
-              <span class="pl-4 font-p1 text-gry-900">{{ recruit.companyInfo.businessSummary }}</span>
+              <span class="pl-4 font-p1 text-gry-900">{{ recruitDetail.summary }}</span>
             </div>
             <div class="flex">
               <span class="block min-w-[92px] font-h4 text-gry-800">주소</span>
-              <span class="block max-w-[241px] pl-4 font-p1 text-gry-900">{{ recruit.companyInfo.address }}</span>
+              <span class="block max-w-[241px] pl-4 font-p1 text-gry-900">{{ recruitDetail.companyAddress }}</span>
             </div>
           </div>
         </div>
@@ -243,94 +245,70 @@ import CircleButton from '@/common/components/button/CircleButton.vue'
 import ToggleButton from '@/common/components/button/ToggleButton.vue'
 import Icon from '@/common/components/CustomIcon.vue'
 import LinePlusIcon from '@/assets/icons/LinePlusIcon_24.svg'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import EvaArrowIcon from '@/assets/icons/EvaArrow_24.svg'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import challengeAPI from '@/api/challengeAPI'
+import recruitAPI from '@/api/recuritAPI'
+import type { RecruitDetailModel } from '@/models/recruitModel'
+import type { CreateChallengeRequest } from '@/models/challengeModel'
+import { formatTextToHtml } from '@/util/format'
 const router = useRouter()
+const route = useRoute()
 
-// HTML 특수 문자와 개행 문자를 처리하는 함수
-const formatText = (text: string): string => {
-  // 먼저 HTML 엔티티를 디코딩
-  const decodedText = text
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
+onMounted(() => {
+  recruitAPI.getRecruitDetail(Number(route.params.id))
+    .then((res) => {
+      console.log(res)
+      recruitDetail.value = res.data
+    })
+    .catch((err) => {
+      console.log(`채용공고 상세 조회 실패 | 메시지 : ${err.message} | 상태코드 : ${err.status} | 에러내역 : ${err.response?.data}`)
+    })
+})
 
-  // 그 다음 다시 인코딩
-  return decodedText
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
-    .replace(/\n/g, '<br />')
-}
+const recruitDetail = ref<RecruitDetailModel>({
+  recruitId: 0,
+  category: '',
+  companyName: '',
+  summary: '',
+  recruitNumber: '',
+  educationType: '',
+  jobType: '',
+  workPlace: '',
+  content: '',
+  careerType: '',
+  wage: '',
+  workTime: '',
+  workType: '',
+  workSchedule: '',
+  totalTime: '',
+  insurance: '',
+  recruitmentMethod: '',
+  applyMethod: '',
+  applyDocument: '',
+  manager: '',
+  managerPhonenumber: '',
+  managerOrganization: '',
+  companyAddress: '',
+  title: '',
+  jobPosting: '',
+  registerDate: new Date(),
+  endDate: new Date()
+})
 
-const recruit: RecruitDetail = {
-  id: '1',
-  title: '김포 더힐 실버케어 요양원',
-  description: '김포 더힐 실버케어 요양원에서 함께 근무하실 남/여 요양보호사(퐁당당, 주간) 모집합니다.',
-  jobInfo: {
-    jobType: '간병인(재가제외)',
-    recruitCount: '2명',
-    education: '관계없음',
-    major: '-',
-    jobDescription: `김포시 마송에 위치한 프리미엄급 요양원입니다. 함께 근무하실 요양보호사 선생님들을 모십니다.
-
-&lt;퐁당당 근무 : 식대포함 급여 2,420,000원&gt;
-09:00 ~ 익일 09:00 (실근무시간 16시간 / 휴게시간 8시간)
-
-&lt;주간 근무 : 식대포함 급여 2,300,000&gt;
-09:00 ~ 18:00(실근무시간 8시간 / 휴게시간 1시간)
-
-많은 지원 부탁드립니다.`,
-    workCondition: {
-      workType: '주간',
-      workDays: '주5일',
-      totalWorkHours: '-',
-      workHours: '퐁당당 근무 09:00 ~ 익일 09:00 (실근무시간 16시간 / 휴게시간 8시간) 주',
-      salary: '(월급) 230만원 상여금 : 0% - 연봉 또는 월급에 미포함',
-      career: '무관',
-      requiredCertificates: '자격증.외국어능력등등'
-    }
-  },
-  recruitmentProcess: {
-    processMethod: '서류,면접',
-    applicationMethod: '전자우편',
-    requiredDocuments: '기타..',
-    deadline: '마감일'
-  },
-  contactPerson: {
-    name: '최원민',
-    department: '-',
-    mobile: '010-1234-5678',
-    phone: '031-1234-5678',
-    fax: '031-1234-5678',
-    email: 'aaaa123@naver.com',
-    deadline: '마감일'
-  },
-  companyInfo: {
-    name: '김포더힐실버케어요양원',
-    representative: '강주대',
-    employeeCount: '40명',
-    insurance: '고용보험,산재보험,건강보험,국민연금',
-    businessSummary: '요약내용',
-    address: '경기도 김포시 통진읍 마송로 김포더힐실버케어요양원'
-  }
-}
-
-// computed 속성으로 포맷된 jobDescription 생성
-const formattedJobDescription = computed(() => formatText(recruit.jobInfo.jobDescription))
+// computed 속성으로 포맷된 Content 생성
+const formattedContent = computed(() => formatTextToHtml(recruitDetail.value.content))
 
 const addFavorite = () => {
   console.log('addFavorite')
 }
 
-const addChallenge = (recruitId: string) => {
-  challengeAPI.createChallenge({ recruitId: Number(recruitId) })
+const addChallenge = (recruitId: number) => {
+  const request: CreateChallengeRequest = {
+    recruitId: recruitId
+  }
+  challengeAPI.createChallenge(request)
     .then((res) => {
       console.log(res)
     })

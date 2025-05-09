@@ -1,0 +1,29 @@
+export interface RecruitDetailModel {
+  recruitId: number;
+  category: string;
+  companyName: string;
+  summary: string;
+  recruitNumber: string;
+  educationType: string;
+  jobType: string;
+  workPlace: string;
+  content: string;
+  careerType: string;
+  wage: string;
+  workTime: string;
+  workType: string;
+  workSchedule: string;
+  totalTime: string;
+  insurance: string;
+  recruitmentMethod: string;
+  applyMethod: string;
+  applyDocument: string;
+  manager: string;
+  managerPhonenumber: string;
+  managerOrganization: string;
+  companyAddress: string;
+  title: string;
+  jobPosting: string;
+  registerDate: Date;
+  endDate: Date;
+}
