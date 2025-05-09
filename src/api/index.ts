@@ -4,7 +4,8 @@ import { useLoginStore } from '@/stores/login';
 import router from '@/router';
 //axios 인스턴스 생성, 5초간 응답이없으면 자동으로 취소됨됨
 const instance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: "", // 배포용
+  // baseURL: 'http://localhost:8080', // 개발용
   timeout: 5000,
   withCredentials: true,
 });
