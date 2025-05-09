@@ -9,29 +9,27 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-const props = defineProps<{
+interface InfoInputProps {
   className?: string,
   id?: string,
   label?: string,
   modelValue?: string,
   placeholder?: string,
   name?: string,
-  readonly: {
-    type: boolean,
-    default: false,
-  },
-  type: {
-    type: 'text' | 'password',
-    default: 'text',
-  },
-  isLabel: {
-    type: boolean,
-    default: false,
-  },
-  inputWidth: {
-    type: string,
-    default: 'w-[480px]',
-  },
+  readonly?: boolean,
+  type?: 'text' | 'password',
+  isLabel?: boolean,
+  inputWidth?: string,
+}
+
+const props = withDefaults(defineProps<InfoInputProps>(), {
+  readonly: false,
+  type: 'text',
+  isLabel: false,
+})
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
 }>()
 
 const inputValue = computed<string>({

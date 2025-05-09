@@ -27,7 +27,7 @@
             인증번호 확인
           </InputInnerButton>
         </TopLabelInput>
-        <div v-if="isVerificationError" class="font-caption text-red-400">{{ verificationErrorMsg }}</div>
+        <div v-if="isVerificationOtpError" class="font-caption text-red-400">{{ verificationOtpErrorMsg }}</div>
       </div>
 
       <Button type="submit" :disabled="!isVerificationOtp">
@@ -64,7 +64,6 @@ import Button from '@/common/components/button/MainButton.vue'
 import LoginApi from '@/api/loginAPI'
 import SubmitModal from '@/components/modal/FindUsernameSubmitModal.vue'
 const router = useRouter()
-const verificationCode = ref('')
 const isVerificationOtp = ref<boolean>(false)
 const isVerificationOtpError = ref<boolean>(false)
 const verificationOtpErrorMsg = ref<string>('인증번호가 일치하지 않습니다.')
@@ -130,13 +129,13 @@ const otpCheck = async (email: string, otp: string) => {
     const res = await LoginApi.otpCheck(email, otp, "username")
     console.log('인증 성공:', res.data)
 
-    isVerificationError.value = false
+    isVerificationOtpError.value = false
     isVerificationOtp.value = true
     // 필요한 경우 인증 완료 상태 처리 추가
   } catch (err: any) {
     console.error('인증 실패:', err.response?.data || err.message)
-    isVerificationError.value = true
-    verificationErrorMsg.value = '인증번호가 일치하지 않습니다.'
+    isVerificationOtpError.value = true
+    verificationOtpErrorMsg.value = '인증번호가 일치하지 않습니다.'
   }
 }
 

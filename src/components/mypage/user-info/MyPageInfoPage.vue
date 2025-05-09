@@ -8,10 +8,10 @@
     <!-- 회원 정보 폼 -->
     <div class="space-y-4">
       <!-- 이름 -->
-      <InfoInput label="이름" name="username" v-model="user.name" readonly="true" is-label="true" />
+      <InfoInput label="이름" name="username" v-model="user.name" :readonly="true" :is-label="true" />
 
       <!-- 이메일 -->
-      <InfoInput label="이메일" name="email" v-model="user.email" readonly="true" is-label="true" />
+      <InfoInput label="이메일" name="email" v-model="user.email" :readonly="true" :is-label="true" />
 
       <!-- 비밀번호 -->
 
@@ -39,7 +39,10 @@ import LoginApi from '@/api/loginAPI';
 import {useRouter} from 'vue-router';
 
 const router=useRouter()
-const user=ref({})
+const user=ref({
+  name:'',
+  email:'',
+})
 const goChangePassword=()=>{
   router.push('check-password')
 }
