@@ -6,6 +6,7 @@ import router from '@/router';
 const instance = axios.create({
   baseURL: 'http://localhost:8080',
   timeout: 5000,
+  withCredentials: true,
 });
 //요청 인터셉터 -> 로그인 토큰이 있으면 Authorization 헤더에 bearer 토큰추가가
 instance.interceptors.request.use(
