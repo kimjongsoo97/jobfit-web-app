@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode'; // ✅ named import
+import { jwtDecode } from 'jwt-decode'; 
 
 // 유저 정보 인터페이스
 interface UserInfo {

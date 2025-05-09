@@ -21,16 +21,19 @@
     </SearchInput>
 
       <!-- 자동완성 리스트 -->
-      <ul v-if="skillSuggestions.length" class="mt-2 border rounded bg-white p-2 shadow max-h-60 overflow-auto">
-        <li
-          v-for="s in skillSuggestions"
-          :key="s"
-          @click="handleSkillSearch(s)"
-          class="cursor-pointer hover:bg-gray-100 px-2 py-1"
-        >
-          {{ s }}
-        </li>
-      </ul>
+      <ul
+  v-if="skillSuggestions.length"
+  class="mt-2 border rounded bg-white p-2 shadow max-h-60 overflow-auto"
+>
+  <li
+    v-for="s in skillSuggestions"
+    :key="s.name"
+    @click="handleSkillSearch(s.name)"
+    class="cursor-pointer hover:bg-gray-100 px-2 py-1"
+  >
+    {{ s.name }} <!-- name 키는 보이지 않고 값만 보여짐 -->
+  </li>
+</ul>
 
       <div class="flex flex-wrap gap-3 mt-4">
         <TechBadge v-for="skill in skills" :key="skill" @click="removeSkill(skill)" is-close>{{ skill }}</TechBadge>
