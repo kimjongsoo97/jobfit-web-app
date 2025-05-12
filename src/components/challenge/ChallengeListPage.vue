@@ -5,7 +5,7 @@
     <div class="flex justify-between items-center mb-8">
       <!-- 챌린지 제목과 설명 -->
       <p class="font-h4 text-gry-700 leading-[30px]">
-        채용공고와 00님의 적합도를 분석했어요.<br />
+        채용공고와 회원님의 적합도를 분석했어요.<br />
         스펙을 추가하여 회사 합격률을 올려보세요.
       </p>
 

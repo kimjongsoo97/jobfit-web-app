@@ -23,5 +23,8 @@ export interface ChallengeDetailInfo {
   careerType: string
   strengths: string
   weaknesses: string
+  strengthsPoint: string
+  weaknessesPoint: string
+  improvements: string
   content: string
 }

@@ -59,6 +59,27 @@
       </div>
     </div>
 
+    <div class="mt-8">
+      <h3 class="font-h3 text-gry-900 mb-4">충족 포인트</h3>
+      <div class="text-gry-800 font-p1 space-y-2">
+        <p v-html="challengeDetail.strengthsPoint" ></p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <h3 class="font-h3 text-gry-900 mb-4">미흡 포인트</h3>
+      <div class="text-gry-800 font-p1 space-y-2">
+        <p v-html="challengeDetail.weaknessesPoint" ></p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <h3 class="font-h3 text-gry-900 mb-4">개선사항</h3>
+      <div class="text-gry-800 font-p1 space-y-2">
+        <p v-html="challengeDetail.improvements" ></p>
+      </div>
+    </div>
+
     <!-- 공고 내용 -->
     <div class="mt-8">
       <h3 class="font-h3 text-gry-900 mb-4">공고내용</h3>
@@ -116,6 +137,9 @@ const challengeDetail = ref<ChallengeDetailInfo>({
   careerType: '',
   strengths: '',
   weaknesses: '',
+  strengthsPoint: '',
+  weaknessesPoint: '',
+  improvements: '',
   content: '',
 })
 
